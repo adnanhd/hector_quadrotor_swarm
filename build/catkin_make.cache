@@ -1,2 +1,2 @@
-agitr
+agitr:hectorquad
 -DCATKIN_DEVEL_PREFIX=/home/adnanhd/swarm/devel -DCMAKE_INSTALL_PREFIX=/home/adnanhd/swarm/install -G Unix Makefiles

@@ -9,6 +9,8 @@
 # modified environment variables
 export CMAKE_PREFIX_PATH="/home/adnanhd/swarm/devel:$CMAKE_PREFIX_PATH"
 export LD_LIBRARY_PATH="/home/adnanhd/swarm/devel/lib:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="/home/adnanhd/swarm/devel/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD="/home/adnanhd/swarm/build"
+export PYTHONPATH="/home/adnanhd/swarm/devel/lib/python2.7/dist-packages:$PYTHONPATH"
 export ROSLISP_PACKAGE_DIRECTORIES="/home/adnanhd/swarm/devel/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
 export ROS_PACKAGE_PATH="/home/adnanhd/swarm/src:$ROS_PACKAGE_PATH"

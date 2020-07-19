@@ -132,6 +132,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/adnanhd/swarm/build/gtest/cmake_install.cmake")
   include("/home/adnanhd/swarm/build/agitr/cmake_install.cmake")
+  include("/home/adnanhd/swarm/build/hectorquad/cmake_install.cmake")
 
 endif()
 

@@ -739,6 +739,448 @@ turtlesim_generate_messages_eus/fast:
 	$(MAKE) -f agitr/CMakeFiles/turtlesim_generate_messages_eus.dir/build.make agitr/CMakeFiles/turtlesim_generate_messages_eus.dir/build
 .PHONY : turtlesim_generate_messages_eus/fast
 
+#=============================================================================
+# Target rules for targets named measureVelocity
+
+# Build rule for target.
+measureVelocity: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 measureVelocity
+.PHONY : measureVelocity
+
+# fast build rule for target.
+measureVelocity/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/measureVelocity.dir/build.make hectorquad/CMakeFiles/measureVelocity.dir/build
+.PHONY : measureVelocity/fast
+
+#=============================================================================
+# Target rules for targets named subsVel
+
+# Build rule for target.
+subsVel: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 subsVel
+.PHONY : subsVel
+
+# fast build rule for target.
+subsVel/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/subsVel.dir/build.make hectorquad/CMakeFiles/subsVel.dir/build
+.PHONY : subsVel/fast
+
+#=============================================================================
+# Target rules for targets named multipleGoPose
+
+# Build rule for target.
+multipleGoPose: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 multipleGoPose
+.PHONY : multipleGoPose
+
+# fast build rule for target.
+multipleGoPose/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/multipleGoPose.dir/build.make hectorquad/CMakeFiles/multipleGoPose.dir/build
+.PHONY : multipleGoPose/fast
+
+#=============================================================================
+# Target rules for targets named goPose
+
+# Build rule for target.
+goPose: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 goPose
+.PHONY : goPose
+
+# fast build rule for target.
+goPose/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/goPose.dir/build.make hectorquad/CMakeFiles/goPose.dir/build
+.PHONY : goPose/fast
+
+#=============================================================================
+# Target rules for targets named hectorquad_genpy
+
+# Build rule for target.
+hectorquad_genpy: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 hectorquad_genpy
+.PHONY : hectorquad_genpy
+
+# fast build rule for target.
+hectorquad_genpy/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/hectorquad_genpy.dir/build.make hectorquad/CMakeFiles/hectorquad_genpy.dir/build
+.PHONY : hectorquad_genpy/fast
+
+#=============================================================================
+# Target rules for targets named hectorquad_generate_messages_nodejs
+
+# Build rule for target.
+hectorquad_generate_messages_nodejs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 hectorquad_generate_messages_nodejs
+.PHONY : hectorquad_generate_messages_nodejs
+
+# fast build rule for target.
+hectorquad_generate_messages_nodejs/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/hectorquad_generate_messages_nodejs.dir/build.make hectorquad/CMakeFiles/hectorquad_generate_messages_nodejs.dir/build
+.PHONY : hectorquad_generate_messages_nodejs/fast
+
+#=============================================================================
+# Target rules for targets named hectorquad_genlisp
+
+# Build rule for target.
+hectorquad_genlisp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 hectorquad_genlisp
+.PHONY : hectorquad_genlisp
+
+# fast build rule for target.
+hectorquad_genlisp/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/hectorquad_genlisp.dir/build.make hectorquad/CMakeFiles/hectorquad_genlisp.dir/build
+.PHONY : hectorquad_genlisp/fast
+
+#=============================================================================
+# Target rules for targets named trajectory_msgs_generate_messages_nodejs
+
+# Build rule for target.
+trajectory_msgs_generate_messages_nodejs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 trajectory_msgs_generate_messages_nodejs
+.PHONY : trajectory_msgs_generate_messages_nodejs
+
+# fast build rule for target.
+trajectory_msgs_generate_messages_nodejs/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/trajectory_msgs_generate_messages_nodejs.dir/build.make hectorquad/CMakeFiles/trajectory_msgs_generate_messages_nodejs.dir/build
+.PHONY : trajectory_msgs_generate_messages_nodejs/fast
+
+#=============================================================================
+# Target rules for targets named trajectory_msgs_generate_messages_cpp
+
+# Build rule for target.
+trajectory_msgs_generate_messages_cpp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 trajectory_msgs_generate_messages_cpp
+.PHONY : trajectory_msgs_generate_messages_cpp
+
+# fast build rule for target.
+trajectory_msgs_generate_messages_cpp/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/trajectory_msgs_generate_messages_cpp.dir/build.make hectorquad/CMakeFiles/trajectory_msgs_generate_messages_cpp.dir/build
+.PHONY : trajectory_msgs_generate_messages_cpp/fast
+
+#=============================================================================
+# Target rules for targets named sensor_msgs_generate_messages_eus
+
+# Build rule for target.
+sensor_msgs_generate_messages_eus: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 sensor_msgs_generate_messages_eus
+.PHONY : sensor_msgs_generate_messages_eus
+
+# fast build rule for target.
+sensor_msgs_generate_messages_eus/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build.make hectorquad/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build
+.PHONY : sensor_msgs_generate_messages_eus/fast
+
+#=============================================================================
+# Target rules for targets named trajectory_msgs_generate_messages_py
+
+# Build rule for target.
+trajectory_msgs_generate_messages_py: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 trajectory_msgs_generate_messages_py
+.PHONY : trajectory_msgs_generate_messages_py
+
+# fast build rule for target.
+trajectory_msgs_generate_messages_py/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/trajectory_msgs_generate_messages_py.dir/build.make hectorquad/CMakeFiles/trajectory_msgs_generate_messages_py.dir/build
+.PHONY : trajectory_msgs_generate_messages_py/fast
+
+#=============================================================================
+# Target rules for targets named trajectory_msgs_generate_messages_eus
+
+# Build rule for target.
+trajectory_msgs_generate_messages_eus: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 trajectory_msgs_generate_messages_eus
+.PHONY : trajectory_msgs_generate_messages_eus
+
+# fast build rule for target.
+trajectory_msgs_generate_messages_eus/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/trajectory_msgs_generate_messages_eus.dir/build.make hectorquad/CMakeFiles/trajectory_msgs_generate_messages_eus.dir/build
+.PHONY : trajectory_msgs_generate_messages_eus/fast
+
+#=============================================================================
+# Target rules for targets named gazebo_msgs_generate_messages_nodejs
+
+# Build rule for target.
+gazebo_msgs_generate_messages_nodejs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 gazebo_msgs_generate_messages_nodejs
+.PHONY : gazebo_msgs_generate_messages_nodejs
+
+# fast build rule for target.
+gazebo_msgs_generate_messages_nodejs/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/gazebo_msgs_generate_messages_nodejs.dir/build.make hectorquad/CMakeFiles/gazebo_msgs_generate_messages_nodejs.dir/build
+.PHONY : gazebo_msgs_generate_messages_nodejs/fast
+
+#=============================================================================
+# Target rules for targets named hectorquad_generate_messages_py
+
+# Build rule for target.
+hectorquad_generate_messages_py: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 hectorquad_generate_messages_py
+.PHONY : hectorquad_generate_messages_py
+
+# fast build rule for target.
+hectorquad_generate_messages_py/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/hectorquad_generate_messages_py.dir/build.make hectorquad/CMakeFiles/hectorquad_generate_messages_py.dir/build
+.PHONY : hectorquad_generate_messages_py/fast
+
+#=============================================================================
+# Target rules for targets named sensor_msgs_generate_messages_cpp
+
+# Build rule for target.
+sensor_msgs_generate_messages_cpp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 sensor_msgs_generate_messages_cpp
+.PHONY : sensor_msgs_generate_messages_cpp
+
+# fast build rule for target.
+sensor_msgs_generate_messages_cpp/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build.make hectorquad/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build
+.PHONY : sensor_msgs_generate_messages_cpp/fast
+
+#=============================================================================
+# Target rules for targets named avoidCollision
+
+# Build rule for target.
+avoidCollision: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 avoidCollision
+.PHONY : avoidCollision
+
+# fast build rule for target.
+avoidCollision/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/avoidCollision.dir/build.make hectorquad/CMakeFiles/avoidCollision.dir/build
+.PHONY : avoidCollision/fast
+
+#=============================================================================
+# Target rules for targets named gazebo_msgs_generate_messages_py
+
+# Build rule for target.
+gazebo_msgs_generate_messages_py: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 gazebo_msgs_generate_messages_py
+.PHONY : gazebo_msgs_generate_messages_py
+
+# fast build rule for target.
+gazebo_msgs_generate_messages_py/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/gazebo_msgs_generate_messages_py.dir/build.make hectorquad/CMakeFiles/gazebo_msgs_generate_messages_py.dir/build
+.PHONY : gazebo_msgs_generate_messages_py/fast
+
+#=============================================================================
+# Target rules for targets named gazebo_msgs_generate_messages_eus
+
+# Build rule for target.
+gazebo_msgs_generate_messages_eus: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 gazebo_msgs_generate_messages_eus
+.PHONY : gazebo_msgs_generate_messages_eus
+
+# fast build rule for target.
+gazebo_msgs_generate_messages_eus/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/gazebo_msgs_generate_messages_eus.dir/build.make hectorquad/CMakeFiles/gazebo_msgs_generate_messages_eus.dir/build
+.PHONY : gazebo_msgs_generate_messages_eus/fast
+
+#=============================================================================
+# Target rules for targets named sensor_msgs_generate_messages_nodejs
+
+# Build rule for target.
+sensor_msgs_generate_messages_nodejs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 sensor_msgs_generate_messages_nodejs
+.PHONY : sensor_msgs_generate_messages_nodejs
+
+# fast build rule for target.
+sensor_msgs_generate_messages_nodejs/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/build.make hectorquad/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/build
+.PHONY : sensor_msgs_generate_messages_nodejs/fast
+
+#=============================================================================
+# Target rules for targets named trajectory_msgs_generate_messages_lisp
+
+# Build rule for target.
+trajectory_msgs_generate_messages_lisp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 trajectory_msgs_generate_messages_lisp
+.PHONY : trajectory_msgs_generate_messages_lisp
+
+# fast build rule for target.
+trajectory_msgs_generate_messages_lisp/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/trajectory_msgs_generate_messages_lisp.dir/build.make hectorquad/CMakeFiles/trajectory_msgs_generate_messages_lisp.dir/build
+.PHONY : trajectory_msgs_generate_messages_lisp/fast
+
+#=============================================================================
+# Target rules for targets named gazebo_msgs_generate_messages_lisp
+
+# Build rule for target.
+gazebo_msgs_generate_messages_lisp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 gazebo_msgs_generate_messages_lisp
+.PHONY : gazebo_msgs_generate_messages_lisp
+
+# fast build rule for target.
+gazebo_msgs_generate_messages_lisp/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/gazebo_msgs_generate_messages_lisp.dir/build.make hectorquad/CMakeFiles/gazebo_msgs_generate_messages_lisp.dir/build
+.PHONY : gazebo_msgs_generate_messages_lisp/fast
+
+#=============================================================================
+# Target rules for targets named hectorquad_gencpp
+
+# Build rule for target.
+hectorquad_gencpp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 hectorquad_gencpp
+.PHONY : hectorquad_gencpp
+
+# fast build rule for target.
+hectorquad_gencpp/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/hectorquad_gencpp.dir/build.make hectorquad/CMakeFiles/hectorquad_gencpp.dir/build
+.PHONY : hectorquad_gencpp/fast
+
+#=============================================================================
+# Target rules for targets named gazebo_msgs_generate_messages_cpp
+
+# Build rule for target.
+gazebo_msgs_generate_messages_cpp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 gazebo_msgs_generate_messages_cpp
+.PHONY : gazebo_msgs_generate_messages_cpp
+
+# fast build rule for target.
+gazebo_msgs_generate_messages_cpp/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/gazebo_msgs_generate_messages_cpp.dir/build.make hectorquad/CMakeFiles/gazebo_msgs_generate_messages_cpp.dir/build
+.PHONY : gazebo_msgs_generate_messages_cpp/fast
+
+#=============================================================================
+# Target rules for targets named sensor_msgs_generate_messages_lisp
+
+# Build rule for target.
+sensor_msgs_generate_messages_lisp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 sensor_msgs_generate_messages_lisp
+.PHONY : sensor_msgs_generate_messages_lisp
+
+# fast build rule for target.
+sensor_msgs_generate_messages_lisp/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/build.make hectorquad/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/build
+.PHONY : sensor_msgs_generate_messages_lisp/fast
+
+#=============================================================================
+# Target rules for targets named sensor_msgs_generate_messages_py
+
+# Build rule for target.
+sensor_msgs_generate_messages_py: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 sensor_msgs_generate_messages_py
+.PHONY : sensor_msgs_generate_messages_py
+
+# fast build rule for target.
+sensor_msgs_generate_messages_py/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/sensor_msgs_generate_messages_py.dir/build.make hectorquad/CMakeFiles/sensor_msgs_generate_messages_py.dir/build
+.PHONY : sensor_msgs_generate_messages_py/fast
+
+#=============================================================================
+# Target rules for targets named rrtPlanner
+
+# Build rule for target.
+rrtPlanner: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 rrtPlanner
+.PHONY : rrtPlanner
+
+# fast build rule for target.
+rrtPlanner/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/rrtPlanner.dir/build.make hectorquad/CMakeFiles/rrtPlanner.dir/build
+.PHONY : rrtPlanner/fast
+
+#=============================================================================
+# Target rules for targets named hectorquad_generate_messages
+
+# Build rule for target.
+hectorquad_generate_messages: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 hectorquad_generate_messages
+.PHONY : hectorquad_generate_messages
+
+# fast build rule for target.
+hectorquad_generate_messages/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/hectorquad_generate_messages.dir/build.make hectorquad/CMakeFiles/hectorquad_generate_messages.dir/build
+.PHONY : hectorquad_generate_messages/fast
+
+#=============================================================================
+# Target rules for targets named publishPose
+
+# Build rule for target.
+publishPose: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 publishPose
+.PHONY : publishPose
+
+# fast build rule for target.
+publishPose/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/publishPose.dir/build.make hectorquad/CMakeFiles/publishPose.dir/build
+.PHONY : publishPose/fast
+
+#=============================================================================
+# Target rules for targets named hectorquad_gennodejs
+
+# Build rule for target.
+hectorquad_gennodejs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 hectorquad_gennodejs
+.PHONY : hectorquad_gennodejs
+
+# fast build rule for target.
+hectorquad_gennodejs/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/hectorquad_gennodejs.dir/build.make hectorquad/CMakeFiles/hectorquad_gennodejs.dir/build
+.PHONY : hectorquad_gennodejs/fast
+
+#=============================================================================
+# Target rules for targets named _hectorquad_generate_messages_check_deps_coordinate
+
+# Build rule for target.
+_hectorquad_generate_messages_check_deps_coordinate: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 _hectorquad_generate_messages_check_deps_coordinate
+.PHONY : _hectorquad_generate_messages_check_deps_coordinate
+
+# fast build rule for target.
+_hectorquad_generate_messages_check_deps_coordinate/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/_hectorquad_generate_messages_check_deps_coordinate.dir/build.make hectorquad/CMakeFiles/_hectorquad_generate_messages_check_deps_coordinate.dir/build
+.PHONY : _hectorquad_generate_messages_check_deps_coordinate/fast
+
+#=============================================================================
+# Target rules for targets named hectorquad_generate_messages_cpp
+
+# Build rule for target.
+hectorquad_generate_messages_cpp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 hectorquad_generate_messages_cpp
+.PHONY : hectorquad_generate_messages_cpp
+
+# fast build rule for target.
+hectorquad_generate_messages_cpp/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/hectorquad_generate_messages_cpp.dir/build.make hectorquad/CMakeFiles/hectorquad_generate_messages_cpp.dir/build
+.PHONY : hectorquad_generate_messages_cpp/fast
+
+#=============================================================================
+# Target rules for targets named hectorquad_generate_messages_eus
+
+# Build rule for target.
+hectorquad_generate_messages_eus: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 hectorquad_generate_messages_eus
+.PHONY : hectorquad_generate_messages_eus
+
+# fast build rule for target.
+hectorquad_generate_messages_eus/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/hectorquad_generate_messages_eus.dir/build.make hectorquad/CMakeFiles/hectorquad_generate_messages_eus.dir/build
+.PHONY : hectorquad_generate_messages_eus/fast
+
+#=============================================================================
+# Target rules for targets named hectorquad_geneus
+
+# Build rule for target.
+hectorquad_geneus: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 hectorquad_geneus
+.PHONY : hectorquad_geneus
+
+# fast build rule for target.
+hectorquad_geneus/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/hectorquad_geneus.dir/build.make hectorquad/CMakeFiles/hectorquad_geneus.dir/build
+.PHONY : hectorquad_geneus/fast
+
+#=============================================================================
+# Target rules for targets named hectorquad_generate_messages_lisp
+
+# Build rule for target.
+hectorquad_generate_messages_lisp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 hectorquad_generate_messages_lisp
+.PHONY : hectorquad_generate_messages_lisp
+
+# fast build rule for target.
+hectorquad_generate_messages_lisp/fast:
+	$(MAKE) -f hectorquad/CMakeFiles/hectorquad_generate_messages_lisp.dir/build.make hectorquad/CMakeFiles/hectorquad_generate_messages_lisp.dir/build
+.PHONY : hectorquad_generate_messages_lisp/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -796,6 +1238,40 @@ help:
 	@echo "... std_srvs_generate_messages_eus"
 	@echo "... geometry_msgs_generate_messages_py"
 	@echo "... turtlesim_generate_messages_eus"
+	@echo "... measureVelocity"
+	@echo "... subsVel"
+	@echo "... multipleGoPose"
+	@echo "... goPose"
+	@echo "... hectorquad_genpy"
+	@echo "... hectorquad_generate_messages_nodejs"
+	@echo "... hectorquad_genlisp"
+	@echo "... trajectory_msgs_generate_messages_nodejs"
+	@echo "... trajectory_msgs_generate_messages_cpp"
+	@echo "... sensor_msgs_generate_messages_eus"
+	@echo "... trajectory_msgs_generate_messages_py"
+	@echo "... trajectory_msgs_generate_messages_eus"
+	@echo "... gazebo_msgs_generate_messages_nodejs"
+	@echo "... hectorquad_generate_messages_py"
+	@echo "... sensor_msgs_generate_messages_cpp"
+	@echo "... avoidCollision"
+	@echo "... gazebo_msgs_generate_messages_py"
+	@echo "... gazebo_msgs_generate_messages_eus"
+	@echo "... sensor_msgs_generate_messages_nodejs"
+	@echo "... trajectory_msgs_generate_messages_lisp"
+	@echo "... gazebo_msgs_generate_messages_lisp"
+	@echo "... hectorquad_gencpp"
+	@echo "... gazebo_msgs_generate_messages_cpp"
+	@echo "... sensor_msgs_generate_messages_lisp"
+	@echo "... sensor_msgs_generate_messages_py"
+	@echo "... rrtPlanner"
+	@echo "... hectorquad_generate_messages"
+	@echo "... publishPose"
+	@echo "... hectorquad_gennodejs"
+	@echo "... _hectorquad_generate_messages_check_deps_coordinate"
+	@echo "... hectorquad_generate_messages_cpp"
+	@echo "... hectorquad_generate_messages_eus"
+	@echo "... hectorquad_geneus"
+	@echo "... hectorquad_generate_messages_lisp"
 .PHONY : help
 
 
