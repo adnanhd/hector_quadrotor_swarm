@@ -1,8 +1,0 @@
-prefix=/home/adnanhd/swarm/install
-
-Name: agitr
-Description: Description of agitr
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 
