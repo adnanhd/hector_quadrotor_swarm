@@ -1,8 +1,0 @@
-prefix=/usr/local
-
-Name: hectorquad
-Description: Description of hectorquad
-Version: 0.0.0
-Cflags: -I${prefix}/include
-Libs: -L${prefix}/lib 
-Requires: 
