@@ -1,8 +1,10 @@
+//! \file More elaborate test class.
+/**!
+ * A more elaborate class definition.
+ */
+
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
-#include <gazebo_msgs/ModelStates.h>
-#include <geometry_msgs/Quaternion.h>
-#include <geometry_msgs/Vector3.h>
 
 /**
  * @brief A callback function. Executed each time a new pose message arrives
@@ -10,13 +12,13 @@
  */
 void TwistMessageReceived(const geometry_msgs::Twist &msg)
 {
-	ROS_INFO_STREAM(std::setprecision(2) << std::fixed << "("
+	ROS_INFO_STREAM(std::setprecision(2) << std::fixed << "[("
 										 << msg.linear.x << ","
 										 << msg.linear.y << "," 
-										 << msg.linear.z << ") ("
+										 << msg.linear.z << "), ("
 										 << msg.angular.x << ","
 										 << msg.angular.y << ","
-										 << msg.angular.z << ")"
+										 << msg.angular.z << ")]"
 					);
 }
 /**!
