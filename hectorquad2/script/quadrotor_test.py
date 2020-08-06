@@ -64,3 +64,4 @@ while not rospy.is_shutdown():
     rospy.loginfo(str(distancex) + " " + str(distancey) + " " + str(distancez))
     pub.publish(msg)
     rate.sleep()
+    
