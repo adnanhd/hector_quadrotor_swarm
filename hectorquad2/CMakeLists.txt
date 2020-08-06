@@ -9,6 +9,7 @@ project(hectorquad2)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  rospy
   gazebo_msgs
   message_generation
   geometry_msgs
