@@ -1,0 +1,42 @@
+<launch>
+    <group ns="drone1">
+        <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
+            <arg name="name" value="drone1"/>
+            <arg name="tf_prefix" value="drone1"/>
+            <arg name="x" value="-1.0"/>
+            <arg name="y" value="-1.0"/>
+        </include>
+    </group>
+    <group ns="drone2">
+        <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
+            <arg name="name" value="drone2"/>
+            <arg name="tf_prefix" value="drone2"/>
+            <arg name="x" value="1.0"/>
+            <arg name="y" value="-1.0"/>
+        </include>
+    </group>
+    <group ns="drone3">
+        <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
+            <arg name="name" value="drone3"/>
+            <arg name="tf_prefix" value="drone3"/>
+            <arg name="x" value="-1.0"/>
+            <arg name="y" value="1.0"/>
+        </include>
+    </group>
+    <group ns="drone4">
+        <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
+            <arg name="name" value="drone4"/>
+            <arg name="tf_prefix" value="drone4"/>
+            <arg name="x" value="1.0"/>
+            <arg name="y" value="1.0"/>
+        </include>
+    </group>
+    <group ns="drone5">
+        <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
+            <arg name="name" value="drone5"/>
+            <arg name="tf_prefix" value="drone5"/>
+            <arg name="x" value="0"/>
+            <arg name="y" value="0"/>
+        </include>
+    </group>    
+</launch>
