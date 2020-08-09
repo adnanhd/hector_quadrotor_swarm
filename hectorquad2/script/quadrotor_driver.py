@@ -9,12 +9,12 @@ msg_twist = [0, 0, 0, 1.0]
 msg_pose = PoseStamped()
 
 
-def get_position(msg):
+def focal_control(msg):
     global msg_pose
     msg_pose = msg
 
 
-def set_position(msg):
+def proximal_control(msg):
     global msg_twist
     global msg_pose
 
@@ -51,11 +51,11 @@ if __name__ == '__main__':
     rospy.init_node('driver', anonymous=True)
 
     rospy.Subscriber(node_name + '/ground_truth_to_tf/pose',
-                     PoseStamped, get_position)
+                     PoseStamped, focal_control)
 
     for arg in rospy.myargv()[2:]:
         rospy.Subscriber('/' + arg + '/ground_truth_to_tf/pose',
-                         PoseStamped, set_position)
+                         PoseStamped, proximal_control)
 
     pub = rospy.Publisher(node_name + '/cmd_vel', Twist, queue_size=10)
 
