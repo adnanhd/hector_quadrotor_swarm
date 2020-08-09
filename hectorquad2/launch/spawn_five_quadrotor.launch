@@ -4,11 +4,10 @@
         <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
             <arg name="name" value="$(arg drone_name)" />
             <arg name="tf_prefix" value="$(arg drone_name)" />
-            
-            <arg name="x" value="-10.0" />
-            <arg name="y" value="-10.0" />
+            <arg name="x" value="0.0" />
+            <arg name="y" value="0.0" />
         </include>
-        <node name="$(arg drone_name)" pkg="hectorquad2" type="quadrotor_controller.py" output="screen" args="$(arg drone_name)" />
+        <node name="focal_driver" pkg="hectorquad2" type="quadrotor_controller.py" output="screen" args="$(arg drone_name)" />
     </group>
 
     <group ns="drone2">
@@ -16,11 +15,10 @@
         <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
             <arg name="name" value="$(arg drone_name)" />
             <arg name="tf_prefix" value="$(arg drone_name)" />
-            
             <arg name="x" value="+10.0" />
             <arg name="y" value="-10.0" />
         </include>
-        <node name="$(arg drone_name)" pkg="hectorquad2" type="quadrotor_controller.py" output="screen" args="$(arg drone_name) drone1 drone3" />
+        <node name="driver" pkg="hectorquad2" type="quadrotor_controller.py" output="screen" args="$(arg drone_name) drone1 drone3 drone4 drone5" />
     </group>
 
     <group ns="drone3">
@@ -28,11 +26,33 @@
         <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
             <arg name="name" value="$(arg drone_name)" />
             <arg name="tf_prefix" value="$(arg drone_name)" />
-            
             <arg name="x" value="+10.0" />
             <arg name="y" value="+10.0" />
         </include>
-        <node name="$(arg drone_name)" pkg="hectorquad2" type="quadrotor_controller.py" output="screen" args="$(arg drone_name) drone1 drone2" />
+        <node name="driver" pkg="hectorquad2" type="quadrotor_controller.py" output="screen" args="$(arg drone_name) drone1 drone2 drone4 drone5" />
+    </group>
+
+    <group ns="drone4">
+        <arg name="drone_name" value="drone4" />
+        <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
+            <arg name="name" value="$(arg drone_name)" />
+            <arg name="tf_prefix" value="$(arg drone_name)" />
+            <arg name="x" value="-10.0" />
+            <arg name="y" value="+10.0" />
+        </include>
+        <node name="driver" pkg="hectorquad2" type="quadrotor_controller.py" output="screen" args="$(arg drone_name) drone1 drone2 drone3 drone5" />
+    </group>
+
+
+    <group ns="drone5">
+        <arg name="drone_name" value="drone5" />
+        <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
+            <arg name="name" value="$(arg drone_name)" />
+            <arg name="tf_prefix" value="$(arg drone_name)" />
+            <arg name="x" value="-10.0" />
+            <arg name="y" value="-10.0" />
+        </include>
+        <node name="driver" pkg="hectorquad2" type="quadrotor_controller.py" output="screen" args="$(arg drone_name) drone1 drone2 drone3 drone4" />
     </group>
 
 </launch>

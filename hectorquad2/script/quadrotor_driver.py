@@ -18,20 +18,17 @@ def set_position(msg):
     global msg_twist
     global msg_pose
 
-    o_des = 15.0
-    C = 225.0
+    o_des = 10.0
+    C = 100.0
 
     x = msg_pose.pose.position.x - msg.pose.position.x
     y = msg_pose.pose.position.y - msg.pose.position.y
     z = msg_pose.pose.position.z - msg.pose.position.z
-    msg_twist[3] += 1
-
+    
     r = math.sqrt(x * x + y * y + z * z)
 
-    rospy.loginfo_throttle(1.0, '%s--%s x:%2.1f y:%2.1f z:%2.1f' %
-                           (rospy.get_namespace(), 'none', x, y, z))
-
-    if (20 < r or r < 10):
+    if (15 < r or r < 5):
+        msg_twist[3] += 1
         if x > o_des:
             msg_twist[0] -= (x-o_des)**2/C
         else:
@@ -40,10 +37,11 @@ def set_position(msg):
             msg_twist[1] -= (y-o_des)**2/C
         else:
             msg_twist[1] += (y-o_des)**2/C
-        if z > o_des:
-            msg_twist[2] -= (z-o_des)**2/C
-        else:
-            msg_twist[2] += (z-o_des)**2/C
+    
+    if z > 0:
+        msg_twist[2] -= z**2/C
+    else:
+        msg_twist[2] += z**2/C
 
 
 if __name__ == '__main__':
