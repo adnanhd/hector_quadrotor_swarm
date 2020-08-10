@@ -7,7 +7,7 @@
             <arg name="x" value="0.0" />
             <arg name="y" value="0.0" />
         </include>
-        <node name="focal_driver" pkg="hectorquad2" type="quadrotor_driver.py" output="screen" args="$(arg drone_name)" />
+        <node name="$(arg drone_name)_driver" pkg="hectorquad2" type="quadrotor_driver.py" output="screen" args="$(arg drone_name)" />
     </group>
 
     <group ns="drone2">
@@ -18,7 +18,7 @@
             <arg name="x" value="+10.0" />
             <arg name="y" value="-10.0" />
         </include>
-        <node name="driver" pkg="hectorquad2" type="quadrotor_driver.py" output="screen" args="$(arg drone_name) drone1 drone3 drone4 drone5" />
+        <node name="$(arg drone_name)_driver" pkg="hectorquad2" type="quadrotor_driver.py" output="screen" args="$(arg drone_name) drone1 drone3 drone4 drone5" />
     </group>
 
     <group ns="drone3">
@@ -29,10 +29,10 @@
             <arg name="x" value="+10.0" />
             <arg name="y" value="+10.0" />
         </include>
-        <node name="driver" pkg="hectorquad2" type="quadrotor_driver.py" output="screen" args="$(arg drone_name) drone1 drone2 drone4 drone5" />
+        <node name="$(arg drone_name)_driver" pkg="hectorquad2" type="quadrotor_driver.py" output="screen" args="$(arg drone_name) drone1 drone2 drone4 drone5" />
     </group>
 
-    <!--group ns="drone4">
+    <group ns="drone4">
         <arg name="drone_name" value="drone4" />
         <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
             <arg name="name" value="$(arg drone_name)" />
@@ -40,7 +40,7 @@
             <arg name="x" value="-10.0" />
             <arg name="y" value="+10.0" />
         </include>
-        <node name="driver" pkg="hectorquad2" type="quadrotor_driver.py" output="screen" args="$(arg drone_name) drone1 drone2 drone3 drone5" />
+        <node name="$(arg drone_name)_driver" pkg="hectorquad2" type="quadrotor_driver.py" output="screen" args="$(arg drone_name) drone1 drone2 drone3 drone5" />
     </group>
 
 
@@ -52,7 +52,7 @@
             <arg name="x" value="-10.0" />
             <arg name="y" value="-10.0" />
         </include>
-        <node name="driver" pkg="hectorquad2" type="quadrotor_driver.py" output="screen" args="$(arg drone_name) drone1 drone2 drone3 drone4" />
-    </group-->
+        <node name="$(arg drone_name)_driver" pkg="hectorquad2" type="quadrotor_driver.py" output="screen" args="$(arg drone_name) drone1 drone2 drone3 drone4" />
+    </group>
 
 </launch>
