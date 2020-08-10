@@ -48,7 +48,7 @@ if __name__ == '__main__':
     num_of_drones = len(rospy.myargv())
     node_name = '' if num_of_drones == 0 else '/' + rospy.myargv()[1]
 
-    rospy.init_node('driver', anonymous=True)
+    rospy.init_node(rospy.myargv()[1], anonymous=True)
 
     rospy.Subscriber(node_name + '/ground_truth_to_tf/pose',
                      PoseStamped, focal_control)
