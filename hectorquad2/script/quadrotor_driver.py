@@ -5,7 +5,7 @@ import math
 import copy
 from geometry_msgs.msg import Twist, Quaternion, PoseStamped
 
-list_twist = [0, 0, 0, 1.0]
+msg_twist = [0, 0, 0, 1.0]
 msg_pose = PoseStamped()
 
 
@@ -15,7 +15,7 @@ def focal_control(msg):
 
 
 def proximal_control(msg):
-    global list_twist
+    global msg_twist
     global msg_pose
 
     o_des = 10.0
@@ -24,33 +24,33 @@ def proximal_control(msg):
     x = msg_pose.pose.position.x - msg.pose.position.x
     y = msg_pose.pose.position.y - msg.pose.position.y
     z = msg_pose.pose.position.z - msg.pose.position.z
-
+    
     r = math.sqrt(x * x + y * y + z * z)
 
     if (15 < r or r < 5):
-        list_twist[3] += 1
+        msg_twist[3] += 1
         if x > o_des:
-            list_twist[0] -= (x - o_des)**2/C
+            msg_twist[0] -= (x-o_des)**2/C
         else:
-            list_twist[0] += (x - o_des)**2/C
+            msg_twist[0] += (x-o_des)**2/C
         if y > o_des:
-            list_twist[1] -= (y - o_des)**2/C
+            msg_twist[1] -= (y-o_des)**2/C
         else:
-            list_twist[1] += (y - o_des)**2/C
-
+            msg_twist[1] += (y-o_des)**2/C
+    
     if z > 0:
-        list_twist[2] -= z**2/C
+        msg_twist[2] -= z**2/C
     else:
-        list_twist[2] += z**2/C
+        msg_twist[2] += z**2/C
 
 
 if __name__ == '__main__':
     num_of_drones = len(rospy.myargv())
     node_name = '' if num_of_drones == 0 else '/' + rospy.myargv()[1]
 
-    rospy.init_node(node_name + '_driver', anonymous=True)
+    rospy.init_node('driver', anonymous=True)
 
-    rospy.Subscriber(node_name + 'ground_truth_to_tf/pose',
+    rospy.Subscriber(node_name + '/ground_truth_to_tf/pose',
                      PoseStamped, focal_control)
 
     for arg in rospy.myargv()[2:]:
@@ -59,18 +59,18 @@ if __name__ == '__main__':
 
     pub = rospy.Publisher(node_name + '/cmd_vel', Twist, queue_size=10)
 
-    rate = rospy.Rate(10)
+    rate = rospy.Rate(5)
     msg = Twist()
 
     while not rospy.is_shutdown():
-        msg.linear.x = list_twist[0] / list_twist[3]
-        msg.linear.y = list_twist[1] / list_twist[3]
-        msg.linear.z = list_twist[2] / list_twist[3]
+        msg.linear.x = msg_twist[0] / msg_twist[3]
+        msg.linear.y = msg_twist[1] / msg_twist[3]
+        msg.linear.z = msg_twist[2] / msg_twist[3]
 
         pub.publish(msg)
 
-        list_twist[0] = 0
-        list_twist[1] = 0
-        list_twist[2] = 0
-        list_twist[3] = 1.0
+        msg_twist[0] = 0
+        msg_twist[1] = 0
+        msg_twist[2] = 0
+        msg_twist[3] = 1.0
         rate.sleep()
