@@ -6,6 +6,6 @@
             <arg name="x" value="8.0" />
             <arg name="y" value="8.0" />
         </include>
-        <node name="slave" pkg="hectorquad2" type="slave_test.py" output="screen" args="uav1 uav3" />
+        <node name="slave" pkg="hectorquad2" type="slave_test.py" output="screen" args="uav2 uav3" />
     </group>
 </launch>

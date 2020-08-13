@@ -1,5 +1,5 @@
 <launch>
-    <node name="gazebo" pkg="gazebo_ros" type="gazebo" output="screen" />
+    <node name="gazebo" pkg="gazebo_ros" type="gazebo" output="screen" required="true"/>
     <group ns="uav1">
         <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
             <arg name="name" value="uav1" />
