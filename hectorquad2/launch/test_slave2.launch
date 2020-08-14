@@ -3,7 +3,7 @@
         <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
             <arg name="name" value="uav3" />
             <arg name="tf_prefix" value="uav3" />
-            <arg name="x" value="3.0" />
+            <arg name="x" value="-3.0" />
             <arg name="y" value="-3.0" />
         </include>
         <node name="slave" pkg="hectorquad2" type="slave_test.py" output="screen" args="uav2" />

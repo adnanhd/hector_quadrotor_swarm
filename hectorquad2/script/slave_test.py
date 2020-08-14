@@ -36,6 +36,8 @@ def quaternionToAngle(quad):
     Documentation for a function.
 
     More details.
+    @param quad is a value of the form PoseStamped().pose.orientation 
+    @return angle
     """
     # Transform the quad of the form PoseStamped().pose.orientation to angle
     # by applying atan2(y,x) => float angle from math library.
@@ -52,9 +54,14 @@ def PoseToStr(pose):
 
 if __name__ == '__main__':
     swarm = rospy.myargv()[1:]
-    # TODO: ADD COMMENTS HERE
+    # initialize swarm_pose with default PoseStamped() objects
+    # in order to keep position information of the agents in the swarm 
     swarm_pose = [PoseStamped()] * len(swarm)
+    # initialize slave_pose with a PoseStamped() object to keep postion information 
+    # of the slave in the swarm
     slave_pose = PoseStamped()
+    # initialize slave_vel with a Twist() object to update velocity information
+    # of the slave
     slave_vel = Twist()
     z_yaw = 0  # not used
 
@@ -65,6 +72,8 @@ if __name__ == '__main__':
     rospy.Subscriber('ground_truth_to_tf/pose',
                      PoseStamped, slave_callback, slave_pose)
 
+    # Subscribe pose topic of the agents in the swarm to keep swarm_pose up-to-date
+    # i.e., keep all agents' position in the swarm
     for agent_index in range(len(swarm)):
         rospy.Subscriber('/' + swarm[agent_index] + '/ground_truth_to_tf/pose',
                          PoseStamped, agent_callback, (swarm_pose, agent_index))
@@ -75,7 +84,7 @@ if __name__ == '__main__':
     rate = rospy.Rate(10)  # 10Hz
 
     while not rospy.is_shutdown():
-        # TODO: ADD COMMENTS HERE
+        # Heading vector is one pillor of the swarm and here is initialized with a Twist() object
         heading_vector = Twist()
 
         #################################
@@ -93,6 +102,7 @@ if __name__ == '__main__':
             angle = quaternionToAngle(agent.pose.orientation)
             x_roll += math.cos(angle)
             y_pitch += math.sin(angle)
+            rospy.loginfo('angle:' + str(angle))
 
         # The norm is the hypothenuse of the right angle of roll, pitch and angle: update expalanation
         norm = math.sqrt((x_roll * x_roll) + (y_pitch * y_pitch))
