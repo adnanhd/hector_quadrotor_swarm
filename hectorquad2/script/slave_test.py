@@ -1,10 +1,4 @@
-
 #!/usr/bin/env python
-""" 
- @package controller node for slave agents in the swarm
-
- it is written by Adnan Harun Dogan and Abdulla Ahmadkhan
-"""
 
 import sys
 import rospy
@@ -14,7 +8,7 @@ from geometry_msgs.msg import Twist, Quaternion, PoseStamped
 epsion = 0.001
 
 
-def focal_control(msg, pose):
+def slave_callback(msg, pose):
     """
     Documentation for a function.
 
@@ -25,16 +19,16 @@ def focal_control(msg, pose):
     pose = msg
 
 
-def slave_control(msg, args):
+def agent_callback(msg, args):
     """
     Documentation for a function.
 
     More details.
     """
     # initializing agents index and updating its position in the list
-    agent_index = args[0]
-    swarm = args[1]
-    swarm[agent_index] = msg
+    swarm_pose = args[0]
+    agent_index = args[1]
+    swarm_pose[agent_index] = msg
 
 
 def quaternionToAngle(quad):
@@ -48,23 +42,32 @@ def quaternionToAngle(quad):
     return math.atan2(2.0*(quad.y * quad.z + quad.w * quad.x), quad.w * quad.w - quad.x * quad.x - quad.y * quad.y + quad.z * quad.z)
 
 
+def TwistToStr(twist):
+    return '[x:%2.1f y:%2.1f z:%2.1f][x:%2.1f y:%2.1f z:%2.1f]' % (twist.linear.x, twist.linear.y, twist.linear.z, twist.angular.x, twist.angular.y, twist.angular.z)
+
+
+def PoseToStr(pose):
+    return '[x:%2.1f y:%2.1f z:%2.1f][x:%2.1f y:%2.1f z:%2.1f]' % (pose.pose.position.x, pose.pose.position.y, pose.pose.position.z, pose.pose.orientation.x, pose.pose.orientation.y, pose.pose.orientation.z)
+
+
 if __name__ == '__main__':
+    swarm = rospy.myargv()[1:]
     # TODO: ADD COMMENTS HERE
-    swarm = [PoseStamped()] * len(rospy.myargv()[1:])
-    agent_vel = [0, 0, 0, 1.0]
-    agent = PoseStamped()
-    z_yaw = 0
+    swarm_pose = [PoseStamped()] * len(swarm)
+    slave_pose = PoseStamped()
+    slave_vel = Twist()
+    z_yaw = 0  # not used
 
     # Initialize node to controll the agent
     rospy.init_node('slave', anonymous=True)
 
     # Subscribe the position of the agent and the rest of agents in the swarm
     rospy.Subscriber('ground_truth_to_tf/pose',
-                     PoseStamped, focal_control)
+                     PoseStamped, slave_callback, slave_pose)
 
-    for agent in rospy.myargv()[1:]:
-        rospy.Subscriber('/' + agent + '/ground_truth_to_tf/pose',
-                         PoseStamped, slave_control)
+    for agent_index in range(len(swarm)):
+        rospy.Subscriber('/' + swarm[agent_index] + '/ground_truth_to_tf/pose',
+                         PoseStamped, agent_callback, (swarm_pose, agent_index))
 
     # Publish the velocity of the agent
     pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
@@ -74,7 +77,6 @@ if __name__ == '__main__':
     while not rospy.is_shutdown():
         # TODO: ADD COMMENTS HERE
         heading_vector = Twist()
-        msg = Twist()
 
         #################################
         ## heading alignment behaviour ##
@@ -83,7 +85,7 @@ if __name__ == '__main__':
         x_roll = 0  # angular motion in x-axix
         y_pitch = 0  # angular motion in y-axix
 
-        for agent in swarm:
+        for agent in swarm_pose:
             # TODO: proofcheck
             # the position vectors, of each agent in the swarm, of the form PoseStamped() containing position
             # information of other agents in the swarm, corresponding direction angle in xy axis is found
@@ -112,27 +114,27 @@ if __name__ == '__main__':
         force = 0
         C = 5  # Constant in the formula
 
-        for other in swarm:
+        for agent_pose in swarm_pose:
             # for the current and each agent in the swarm, find the difference in between and in all three axes
-            d_x = other.pose.position.x - agent.pose.position.x
-            d_y = other.pose.position.y - agent.pose.position.y
-            d_z = other.pose.position.z - agent.pose.position.z
+            d_x = agent_pose.pose.position.x - slave_pose.pose.position.x
+            d_y = agent_pose.pose.position.y - slave_pose.pose.position.y
+            d_z = agent_pose.pose.position.z - slave_pose.pose.position.z
 
             # Find distance from the difference in three axes
             distance = math.sqrt(d_x * d_x + d_y * d_y + d_z * d_z)
 
             # If the distance, i.e. the agent, is far from how much it is supposed to be,
             if distance > o_des:
-                # take force f_k to be ((o_des - o_k))^2 / C
-                force = ((o_des - distance) ** 2) / C
+                # increment force f_k by ((o_des - o_k))^2 / C
+                force += ((o_des - distance) ** 2) / C
             else:
-                # otherwise, add a minus sign before the right hand side.
-                force = - ((o_des - distance) ** 2) / C
+                # otherwise, decrement by ((o_des - o_k))^2 / C.
+                force -= ((o_des - distance) ** 2) / C
 
         # update position vector with corresponding position vector
-        position_vector.linear.x = agent.pose.position.x * force
-        position_vector.linear.y = agent.pose.position.y * force
-        position_vector.linear.z = agent.pose.position.z * force
+        position_vector.linear.x = slave_pose.pose.position.x * force
+        position_vector.linear.y = slave_pose.pose.position.y * force
+        position_vector.linear.z = slave_pose.pose.position.z * force
 
         ############################
         ## desired heading vector ##
@@ -174,18 +176,19 @@ if __name__ == '__main__':
         ## motion control ##
         ####################
 
-        dot_product = (a.linear.x * agent.pose.position.x) + \
-            (a.linear.y * agent.pose.position.y)
+        dot_product = (a.linear.x * slave_pose.pose.position.x) + \
+            (a.linear.y * slave_pose.pose.position.y)
         if dot_product >= 0:
-            msg.linear.y = (dot_product ** 1) * 7
+            slave_vel.linear.y = (dot_product ** 1) * 7
         else:
-            msg.linear.y = 0
+            slave_vel.linear.y = 0
 
-        if math.sqrt(a.linear.x ** 2 + a.linear.y ** 2) * math.sqrt(agent.pose.position.x ** 2 + agent.pose.position.y ** 2) != 0:
-            msg.angular.z = math.acos(dot_product / (math.sqrt(a.linear.x ** 2 + a.linear.y ** 2)
-                                                     * math.sqrt(agent.pose.position.x ** 2 + agent.pose.position.y ** 2))) * 0.5
+        if math.sqrt(a.linear.x ** 2 + a.linear.y ** 2) * math.sqrt(slave_pose.pose.position.x ** 2 + slave_pose.pose.position.y ** 2) != 0:
+            slave_vel.angular.z = math.acos(dot_product / (math.sqrt(a.linear.x ** 2 + a.linear.y ** 2)
+                                                           * math.sqrt(slave_pose.pose.position.x ** 2 + slave_pose.pose.position.y ** 2))) * 0.5
 
-        rospy.loginfo(str(msg.linear.x) + " " + str(msg.linear.y) + " " + str(msg.linear.z) +
-                      " " + str(msg.angular.x) + " " + str(msg.angular.y) + " " + str(msg.angular.z))
-        pub.publish(msg)
+        rospy.loginfo_throttle(4.0, 'heading ' + TwistToStr(heading_vector))
+        rospy.loginfo_throttle(4.0, 'position ' + TwistToStr(position_vector))
+        rospy.loginfo_throttle(4.0, 'velocity ' + TwistToStr(slave_vel))
+        pub.publish(slave_vel)
         rate.sleep()
