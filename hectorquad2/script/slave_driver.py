@@ -92,6 +92,7 @@ def PoseToStr(pose):
 
 
 if __name__ == '__main__':
+    # initialize swarm with all arguments defining swarm but excluding slave itself
     swarm = rospy.myargv()[1:]
     # initialize swarm_pose with default PoseStamped() objects
     # in order to keep position information of the agents in the swarm
