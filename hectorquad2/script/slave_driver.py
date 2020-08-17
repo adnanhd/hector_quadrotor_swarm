@@ -78,9 +78,28 @@ def Quad2Euler(q):
     int
         Description of return value
     """
+    # @see https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles#Quaternion_to_Euler_Angles_Conversion
+    # roll (x-axis rotation)
+    sinr_cosp = 2 * (q.w * q.x + q.y * q.z)
+    cosr_cosp = 1 - 2 * (q.x * q.x + q.y * q.y)
+    roll = math.atan2(sinr_cosp, cosr_cosp)
+
+    # pitch (y-axis rotation)
+    sinp = 2 * (q.w * q.y - q.z * q.x)
+    if (abs(sinp) >= 1):
+        # use 90 degrees if out of range
+        pitch = math.copysign(math.pi / 2, sinp)
+    else:
+        pitch = math.asin(sinp)
+
+    # yaw (z-axis rotation)
+    siny_cosp = 2 * (q.w * q.z + q.x * q.y)
+    cosy_cosp = 1 - 2 * (q.y * q.y + q.z * q.z)
+    yaw = math.atan2(siny_cosp, cosy_cosp)
+
     # Transform the q of the form PoseStamped().pose.orientation to angle
     # by applying atan2(y,x) => float angle from math library.
-    return math.atan2(2.0*(q.y * q.z + q.w * q.x), q.w * q.w - q.x * q.x - q.y * q.y + q.z * q.z)
+    return (roll, pitch, yaw)
 
 
 def TwistToStr(twist):
@@ -131,29 +150,28 @@ if __name__ == '__main__':
         ## heading alignment behaviour ##
         #################################
 
-        x_roll = 0  # angular motion in x-axix
-        y_pitch = 0  # angular motion in y-axix
+        cos_yaw = 0  # projection of z-axis rotation (yaw) onto x-axix
+        sin_yaw = 0  # projection of z-axis rotation (yaw) onto y-axix
 
         for agent in swarm_pose:
             # TODO: proofcheck
             # the position vectors, of each agent in the swarm, of type PoseStamped() containing position
             # information of other agents in the swarm, corresponding direction angle in xy axis is found
             # and accumulate to pitch and roll values
-            angle = Quad2Euler(agent.pose.orientation)
-            x_roll += math.cos(angle)
-            y_pitch += math.sin(angle)
-            rospy.loginfo('angle:' + str(angle))
+            z_yaw = Quad2Euler(agent.pose.orientation)[2]
+            cos_yaw += math.cos(z_yaw)
+            sin_yaw += math.sin(z_yaw)
 
         # The norm is the hypothenuse of the right angle of roll, pitch and angle: update expalanation
-        norm = math.sqrt((x_roll * x_roll) + (y_pitch * y_pitch))
+        norm = math.sqrt((cos_yaw * cos_yaw) + (sin_yaw * sin_yaw))
 
         # initialize a heading_vector
         if abs(norm) < epsion:  # epsilon is very close to zero
             heading_vector.linear.x = 0
             heading_vector.linear.y = 0
         else:
-            heading_vector.linear.x = x_roll / norm
-            heading_vector.linear.y = y_pitch / norm
+            heading_vector.linear.x = cos_yaw / norm
+            heading_vector.linear.y = sin_yaw / norm
 
         ################################
         ## proximal control behaviour ##
