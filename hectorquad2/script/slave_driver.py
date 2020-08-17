@@ -10,20 +10,31 @@ epsion = 0.001
 
 def slave_callback(msg, pose):
     """
-    Documentation for a function.
+    @param msg This is a callback message of type PoseStamped() from the module geometry_msgs.msg
+    @param This is the position of , 
 
-    More details.
+
+    This is a callback function of type PoseStamped in geometry_msgs
+
+    Updates slaves own position, stored in pose of type PoseStamped(), 
+    with msg, of type PoseStamped().
     """
+    global slave_pose
     # Update the agent's position as soon as the topic
     # ground_truth_to_tf/pose published
-    pose = msg
+    slave_pose = msg
 
 
 def agent_callback(msg, args):
     """
-    Documentation for a function.
+    @param msg This is a callback message of type PoseStamped() from the module geometry_msgs.msg
+    @param args This is a pair (2-tuple) of the list of agents' positions in the swarm and the index of the agent whose pose is published to be updated in the list
+    @brief This function updates args[1]th element of the list args[0] of type list of PoseStamped() with msg of type PoseStamped()
 
-    More details.
+    This is a callback function of type PoseStamped in geometry_msgs
+
+    Updates args[1]th agent's position in the swarm, stored in pose of type PoseStamped(), 
+    with msg, of type PoseStamped().
     """
     # initializing agents index and updating its position in the list
     swarm_pose = args[0]
@@ -31,13 +42,22 @@ def agent_callback(msg, args):
     swarm_pose[agent_index] = msg
 
 
-def quaternionToAngle(q):
+def Quad2Euler(q):
     """
-    Documentation for a function.
+    This function transforms from quernion to euler
 
-    More details.
-    @param quad is a value of the form PoseStamped().pose.orientation 
-    @return angle
+    TODO: Extended description of function.
+
+    Parameters
+    ----------
+    q : PoseStamped().pose.orientation
+        This is an orientation vector in queternion form
+
+    Returns
+        The euler form of the parameter q
+    -------
+    int
+        Description of return value
     """
     # Transform the q of the form PoseStamped().pose.orientation to angle
     # by applying atan2(y,x) => float angle from math library.
@@ -96,10 +116,10 @@ if __name__ == '__main__':
 
         for agent in swarm_pose:
             # TODO: proofcheck
-            # the position vectors, of each agent in the swarm, of the form PoseStamped() containing position
+            # the position vectors, of each agent in the swarm, of type PoseStamped() containing position
             # information of other agents in the swarm, corresponding direction angle in xy axis is found
             # and accumulate to pitch and roll values
-            angle = quaternionToAngle(agent.pose.orientation)
+            angle = Quad2Euler(agent.pose.orientation)
             x_roll += math.cos(angle)
             y_pitch += math.sin(angle)
             rospy.loginfo('angle:' + str(angle))
