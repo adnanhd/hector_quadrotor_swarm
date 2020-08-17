@@ -7,6 +7,6 @@
             <arg name="x" value="0.0" />
             <arg name="y" value="0.0" />
         </include>
-        <node name="master" pkg="hectorquad2" type="master_test.py" output="screen" args="" />
+        <node name="master" pkg="hectorquad2" type="focal_driver.py" output="screen" args="" />
     </group>
 </launch>
