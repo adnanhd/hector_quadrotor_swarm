@@ -3,21 +3,29 @@
 import sys
 import rospy
 import math
-import copy
 from geometry_msgs.msg import Twist, Quaternion, PoseStamped
 epsion = 0.001
 
 
 def slave_callback(msg, pose):
     """
-    @param msg This is a callback message of type PoseStamped() from the module geometry_msgs.msg
-    @param This is the position of , 
-
-
     This is a callback function of type PoseStamped in geometry_msgs
 
     Updates slaves own position, stored in pose of type PoseStamped(), 
     with msg, of type PoseStamped().
+
+    Parameters
+    ----------
+    msg : PoseStamped()
+            This is a message of topic ground_truth_to_tf/pose containing
+            location and orientation information of the agent
+    pose: PoseStamped()
+            This is a variable to keep up-to-date the location and orien-
+            tation information of the agent
+
+    Returns
+        nothing
+    -------
     """
     global slave_pose
     # Update the agent's position as soon as the topic
@@ -27,14 +35,25 @@ def slave_callback(msg, pose):
 
 def agent_callback(msg, args):
     """
-    @param msg This is a callback message of type PoseStamped() from the module geometry_msgs.msg
-    @param args This is a pair (2-tuple) of the list of agents' positions in the swarm and the index of the agent whose pose is published to be updated in the list
-    @brief This function updates args[1]th element of the list args[0] of type list of PoseStamped() with msg of type PoseStamped()
-
     This is a callback function of type PoseStamped in geometry_msgs
 
-    Updates args[1]th agent's position in the swarm, stored in pose of type PoseStamped(), 
-    with msg, of type PoseStamped().
+    This function updates args[1]th element of the list args[0] of type 
+    list of PoseStamped() with msg of type PoseStamped()
+
+    Parameters
+    ----------
+    msg : PoseStamped()
+            This is a message of topic ground_truth_to_tf/pose containing
+            location and orientation information of the agent to be call-
+            backed
+    args: PoseStamped()
+            This is a pair (2-tuple) of the list of agents' positions in 
+            the swarm and the index of the agent whose pose is published 
+            to be updated in the list
+
+    Returns
+        nothing
+    -------
     """
     # initializing agents index and updating its position in the list
     swarm_pose = args[0]
