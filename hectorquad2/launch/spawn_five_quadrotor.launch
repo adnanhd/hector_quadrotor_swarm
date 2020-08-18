@@ -1,49 +1,5 @@
 <launch>
-    <node name="gazebo" pkg="gazebo_ros" type="gazebo" output="screen" />
-    <group ns="uav1" required="true">
-        <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
-            <arg name="name" value="uav1" />
-            <arg name="tf_prefix" value="uav1" />
-            <arg name="x" value="0.0" />
-            <arg name="y" value="0.0" />
-        </include>
-        <node name="master" pkg="hectorquad2" type="focal_test.py" output="screen" args="" />
-    </group>
-    <group ns="uav2" required="true">
-        <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
-            <arg name="name" value="uav2" />
-            <arg name="tf_prefix" value="uav2" />
-            <arg name="x" value="8.0" />
-            <arg name="y" value="8.0" />
-        </include>
-        <node name="slave" pkg="hectorquad2" type="slave_test.py" output="screen" args="uav1 uav3" />
-    </group>
-    <group ns="uav3" required="true">
-        <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
-            <arg name="name" value="uav3" />
-            <arg name="tf_prefix" value="uav3" />
-            <arg name="x" value="-8.0" />
-            <arg name="y" value="-8.0" />
-        </include>
-        <node name="slave" pkg="hectorquad2" type="slave_test.py" output="screen" args="uav1 uav2" />
-    </group>
-    <group ns="uav4" required="true">
-        <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
-            <arg name="name" value="uav4" />
-            <arg name="tf_prefix" value="uav4" />
-            <arg name="x" value="-8.0" />
-            <arg name="y" value="8.0" />
-        </include>
-        <node name="slave" pkg="hectorquad2" type="slave_test.py" output="screen" args="uav1 uav2 uav3 uav5" />
-    </group>
-    <group ns="uav5" required="true">
-        <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
-            <arg name="name" value="uav5" />
-            <arg name="tf_prefix" value="uav5" />
-            <arg name="x" value="8.0" />
-            <arg name="y" value="-8.0" />
-        </include>
-        <node name="slave" pkg="hectorquad2" type="slave_test.py" output="screen" args="uav1 uav2 uav3 uav4" />
-    </group>
+    <include file="$(find hectorquad2)/launch/test_focal.launch" />
+    <include file="$(find hectorquad2)/launch/test_slave1.launch" />
+    <include file="$(find hectorquad2)/launch/test_slave2.launch" />
 </launch>
-
