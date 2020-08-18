@@ -154,10 +154,9 @@ if __name__ == '__main__':
         sin_yaw = 0  # projection of z-axis rotation (yaw) onto y-axix
 
         for agent in swarm_pose:
-            # TODO: proofcheck
-            # the position vectors, of each agent in the swarm, of type PoseStamped() containing position
-            # information of other agents in the swarm, corresponding direction angle in xy axis is found
-            # and accumulate to pitch and roll values
+            # For each position vector `agent`, of type PoseStamped() containing position information 
+            # of other agents in the swarm, corresponding direction angle in xy-plane is found and ac-
+            # cumulate to pitch and roll values
             z_yaw = Quad2Euler(agent.pose.orientation)[2]
             cos_yaw += math.cos(z_yaw)
             sin_yaw += math.sin(z_yaw)
@@ -244,10 +243,12 @@ if __name__ == '__main__':
         ## motion control ##
         ####################
 
+        K_c = 7.0  # Constant in the formula
+
         dot_product = (a.linear.x * slave_pose.pose.position.x) + \
             (a.linear.y * slave_pose.pose.position.y)
         if dot_product >= 0:
-            slave_vel.linear.y = (dot_product ** 1) * 7
+            slave_vel.linear.y = (dot_product ** 1) * K_c
         else:
             slave_vel.linear.y = 0
 
@@ -255,8 +256,7 @@ if __name__ == '__main__':
             slave_vel.angular.z = math.acos(dot_product / (math.sqrt(a.linear.x ** 2 + a.linear.y ** 2)
                                                            * math.sqrt(slave_pose.pose.position.x ** 2 + slave_pose.pose.position.y ** 2))) * 0.5
 
-        rospy.loginfo_throttle(4.0, 'heading ' + TwistToStr(heading_vector))
-        rospy.loginfo_throttle(4.0, 'position ' + TwistToStr(position_vector))
-        rospy.loginfo_throttle(4.0, 'velocity ' + TwistToStr(slave_vel))
+        if (slave_pose.pose.position.z < 5):
+            slave_vel.linear.z += 0.5
         pub.publish(slave_vel)
         rate.sleep()
