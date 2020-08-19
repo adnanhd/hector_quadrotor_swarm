@@ -3,6 +3,7 @@
 import rospy
 import math
 from geometry_msgs.msg import Twist, Quaternion, PoseStamped
+epsilon = 0.001
 
 
 def Quad2Euler(q):
@@ -51,54 +52,105 @@ def update_position(msg, position):
     position[1] = msg.pose.position.y
     position[2] = msg.pose.position.z
     position[3] = Quad2Euler(msg.pose.orientation)[2]
-    rospy.loginfo('yaw: %3.2f' % position[3])
 
 
-def coeff(a, b):
-    if abs(a-b) < 1:
-        return 0
-    elif(a < b):
-        return 1
+def level_of_distance(distance):
+    if distance < 3:
+        return 7
+    elif distance < 25:
+        return int(8 / math.log(distance))
     else:
-        return -1
-
-
-def PoseToStr(pose):
-    return '[x:%2.1f y:%2.1f z:%2.1f][x:%2.1f y:%2.1f z:%2.1f]' % (pose.pose.position.x, pose.pose.position.y, pose.pose.position.z, pose.pose.orientation.x, pose.pose.orientation.y, pose.pose.orientation.z)
+        return 0
 
 
 if __name__ == '__main__':
-    waypoints = [(10, 10, 25), (10, -10, 25), (-10, -10, 25), (-10, 10, 25)]
+    wps = [(15, 15, 10), (15, -15, 10), (-15, -15, 10), (-15, 15, 10)]
     position = [0, 0, 0, 0]
-    velocity = [0, 0, 0, 0]
     msg = Twist()
-    i = 1
+    K_p = 2.0
+    i = 0
 
     rospy.init_node('master', anonymous=True)
     rospy.Subscriber('ground_truth_to_tf/pose',
                      PoseStamped, update_position, position)
 
     pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
-    rate = rospy.Rate(10)
-
-    rospy.spin()
+    rate = rospy.Rate(100)
 
     while not rospy.is_shutdown():
 
-        for dim in [0, 1, 2]:
-            if abs(waypoints[i][dim] - position[dim]) > 0.25:
-                velocity[dim] = (waypoints[i][dim] - position[dim]) / 2.0
-            else:
-                velocity[dim] = 0
+        delta_x = wps[i][0] - position[0]
+        delta_y = wps[i][1] - position[1]
+        delta_z = wps[i][2] - position[2]
 
-        if (velocity[0:3] == [0, 0, 0]):
-            i = (i+1) % len(waypoints)
+        ################################
+        ## HEADING ALIGNMENT BEHAVIOR ##
+        ################################
 
-        msg.linear.x = velocity[0]
-        msg.linear.y = velocity[1]
-        msg.linear.z = velocity[2]
-        msg.angular.z = velocity[3]
+        heading_vector = Twist()
 
+        # desired z-axis rotation (yaw)
+        yaw = math.atan2(delta_y, delta_x)
+        # projection of desired z-axis rotation (yaw) onto x-axix
+        cos_yaw = math.cos(yaw)
+        # projection of desired z-axis rotation (yaw) onto y-axix
+        sin_yaw = math.sin(yaw)
+
+        heading_vector.linear.x = cos_yaw
+        heading_vector.linear.y = sin_yaw
+        heading_vector.angular.z = yaw
+
+        ################################
+        ## PROXIMAL CONTROL BEHAVIOR  ##
+        ################################
+
+        proximal_vector = Twist()
+
+        o_k = level_of_distance(math.sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z))
+        o_des = 7  # Constant to reach waypoints
+        C = 5.0  # Constant in the formula
+
+        if (o_k >= o_des):
+            f_k = - (o_k - o_des) ** 2 / C
+        else:
+            f_k = (o_k - o_des) ** 2 / C
+
+        proximal_vector.linear.x = f_k * cos_yaw 
+        proximal_vector.linear.y = f_k * sin_yaw 
+
+        ################################
+        ## DESIRED  HEADING  VECTOR   ##
+        ################################
+
+        alpha = Twist()
+        beta = 2.0
+        
+        cos_alpha = heading_vector.linear.x + beta * proximal_vector.linear.x
+        sin_alpha = heading_vector.linear.y + beta * proximal_vector.linear.y
+        norm_alpha = math.sqrt(sin_alpha * sin_alpha + cos_alpha * cos_alpha)
+
+        alpha.linear.x = cos_alpha / norm_alpha
+        alpha.linear.y = sin_alpha / norm_alpha
+
+        ################################
+        ## MOTION CONTROL BEHAVIOR    ##
+        ################################
+        
+        u_max = 5.0
+
+        dot_product = alpha.linear.x * math.cos(position[3]) + alpha.linear.y + math.sin(position[3])
+
+        msg.linear.x = dot_product * u_max if (dot_product > 0) else 0
+        msg.linear.z = delta_z
+        msg.angular.z = (yaw - position[3]) * K_p
+
+        if (o_k == o_des):
+            i = (i + 1) % len(wps)
+        
+        if (o_k == 0): 
+            rospy.loginfo_throttle(1,'distance is unknown %3.2f' % math.sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z))
+            rospy.loginfo_throttle(1,'x:%3.2f y:%3.2f z:%3.2f w:%3.2f' % tuple(position))
+            rospy.loginfo_throttle(1, 'x:%3.2f y:%3.2f z:%3.2f ------' % (delta_x, delta_y, delta_z))
 
         pub.publish(msg)
 
