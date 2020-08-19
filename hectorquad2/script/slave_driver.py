@@ -30,8 +30,8 @@ def slave_callback(msg, slave):
     # Update the slave's position as soon as the topic
     # ground_truth_to_tf/pose published
     slave.pose.position.x = msg.pose.position.x
-    slave.pose.position.x = msg.pose.position.x
-    slave.pose.position.x = msg.pose.position.x
+    slave.pose.position.y = msg.pose.position.y
+    slave.pose.position.z = msg.pose.position.z
     slave.pose.orientation.x = msg.pose.orientation.x
     slave.pose.orientation.y = msg.pose.orientation.y
     slave.pose.orientation.z = msg.pose.orientation.z
@@ -64,8 +64,8 @@ def agent_callback(msg, args):
     swarm_pose = args[0]
     agent_index = args[1]
     swarm_pose[agent_index].pose.position.x = msg.pose.position.x
-    swarm_pose[agent_index].pose.position.x = msg.pose.position.x
-    swarm_pose[agent_index].pose.position.x = msg.pose.position.x
+    swarm_pose[agent_index].pose.position.y = msg.pose.position.y
+    swarm_pose[agent_index].pose.position.z = msg.pose.position.z
     swarm_pose[agent_index].pose.orientation.x = msg.pose.orientation.x
     swarm_pose[agent_index].pose.orientation.y = msg.pose.orientation.y
     swarm_pose[agent_index].pose.orientation.z = msg.pose.orientation.z
@@ -133,7 +133,6 @@ if __name__ == '__main__':
     # initialize slave_vel with a Twist() object to update velocity information
     # of the slave
     slave_vel = Twist()
-    slave_aw = 0  # not used
 
     # Initialize node to controll the agent
     rospy.init_node('slave', anonymous=True)
@@ -161,8 +160,8 @@ if __name__ == '__main__':
         ## heading alignment behaviour ##
         #################################
 
-        cos_agent_yaw = 0  # projection of the current z-axis rotation (yaw) onto x-axix
-        sin_agent_yaw = 0  # projection of the current z-axis rotation (yaw) onto y-axix
+        cos_swarm_yaw = 0  # projection of the current z-axis rotation (yaw) onto x-axix
+        sin_swarm_yaw = 0  # projection of the current z-axis rotation (yaw) onto y-axix
 
         for agent in swarm_pose:
             # For each position vector `agent`, of type PoseStamped() containing position information
@@ -188,8 +187,8 @@ if __name__ == '__main__':
         ################################
 
         position_vector = Twist()
-        o_des = 4  # Constant in the formula
-        C = 5  # Constant in the formula
+        o_des = 5  # Constant in the formula
+        C = 6  # Constant in the formula
 
         for agent_pose in swarm_pose:
             # for the current and each agent in the swarm, find the difference in between and in all three axes
@@ -220,7 +219,7 @@ if __name__ == '__main__':
 
         # Desired Heading Vector 'a' is initialized with a Twist() object
         alpha = Twist()
-        beta = 8  # Constant in the formula
+        beta = 13  # Constant in the formula
 
         # initializing the numerators in 3 axes of Desired Heading Vector and the denominator
         cos_alpha = heading_vector.linear.x + beta * position_vector.linear.x
@@ -237,17 +236,17 @@ if __name__ == '__main__':
         # updating numerators with heading vector and proximal control vector in corresponding coodinate axis
         u_max = 2.2
 
-        alpha_cur = Quad2Euler(slave_pose.pose.orientation)[2]
+        slave_yaw = Quad2Euler(slave_pose.pose.orientation)[2]
 
-        dot_product = alpha.linear.x * math.cos(alpha_cur) + alpha.linear.y * math.sin(alpha_cur)
+        dot_product = alpha.linear.x * math.cos(slave_yaw) + alpha.linear.y * math.sin(slave_yaw)
 
         # updating denominator with the norm of numerators
         
         K_p = 0.5  # Constant in the formula
 
         slave_vel.linear.x = dot_product * u_max if (dot_product > 0) else 0
-        slave_vel.linear.z = swarm_pose[0].pose.position.z - slave_pose.pose.position.z
-        slave_vel.angular.z = (math.atan2(sin_alpha, cos_alpha) -  alpha_cur) * K_p
+        slave_vel.linear.z = 10 - slave_pose.pose.position.z
+        slave_vel.angular.z = (math.atan2(sin_alpha, cos_alpha) -  slave_yaw) * K_p
 
 
         pub.publish(slave_vel)
