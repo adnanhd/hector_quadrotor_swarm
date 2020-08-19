@@ -150,7 +150,7 @@ if __name__ == '__main__':
     # Publish the velocity of the agent
     pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
 
-    rate = rospy.Rate(10)  # 10Hz
+    rate = rospy.Rate(200)  # 10Hz
 
     while not rospy.is_shutdown():
         # Heading vector is one pillor of the swarm and here is initialized with a Twist() object
@@ -188,7 +188,7 @@ if __name__ == '__main__':
 
         position_vector = Twist()
         o_des = 5  # Constant in the formula
-        C = 6  # Constant in the formula
+        C = 5  # Constant in the formula
 
         for agent_pose in swarm_pose:
             # for the current and each agent in the swarm, find the difference in between and in all three axes
@@ -219,7 +219,7 @@ if __name__ == '__main__':
 
         # Desired Heading Vector 'a' is initialized with a Twist() object
         alpha = Twist()
-        beta = 13  # Constant in the formula
+        beta = 12  # Constant in the formula
 
         # initializing the numerators in 3 axes of Desired Heading Vector and the denominator
         cos_alpha = heading_vector.linear.x + beta * position_vector.linear.x
@@ -234,7 +234,7 @@ if __name__ == '__main__':
         ####################
         
         # updating numerators with heading vector and proximal control vector in corresponding coodinate axis
-        u_max = 2.2
+        u_max = 2.75
 
         slave_yaw = Quad2Euler(slave_pose.pose.orientation)[2]
 
@@ -242,10 +242,10 @@ if __name__ == '__main__':
 
         # updating denominator with the norm of numerators
         
-        K_p = 0.5  # Constant in the formula
+        K_p = 1.5  # Constant in the formula
 
         slave_vel.linear.x = dot_product * u_max if (dot_product > 0) else 0
-        slave_vel.linear.z = 10 - slave_pose.pose.position.z
+        slave_vel.linear.z = swarm_pose[0].pose.position.z - slave_pose.pose.position.z
         slave_vel.angular.z = (math.atan2(sin_alpha, cos_alpha) -  slave_yaw) * K_p
 
 

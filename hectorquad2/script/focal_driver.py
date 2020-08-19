@@ -55,19 +55,21 @@ def update_position(msg, position):
 
 
 def level_of_distance(distance):
-    if distance < 3:
+    if distance < 5:
         return 7
-    elif distance < 25:
+    elif distance < 50:
         return int(8 / math.log(distance))
     else:
         return 0
 
 
 if __name__ == '__main__':
-    wps = [(10, 10, 10), (10, -10, 10), (-10, -10, 10), (-10, 10, 10)]
+    wps = [(8, 6, 15), (6, 8, 10), (0, 10, 10), (-6, 8, 15), (-8, 6, 10), (-10, 0, 10),
+           (-8, -6, 15), (-6, -8, 10), (0, -10, 10), (6, -8, 15), (8, -6, 10), (10, 0, 10)]
+
     position = [0, 0, 0, 0]
     msg = Twist()
-    K_p = 0.5
+    K_p = 1.0
     i = 0
 
     rospy.init_node('master', anonymous=True)
@@ -75,7 +77,7 @@ if __name__ == '__main__':
                      PoseStamped, update_position, position)
 
     pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
-    rate = rospy.Rate(100)
+    rate = rospy.Rate(50)
 
     while not rospy.is_shutdown():
 
@@ -106,7 +108,8 @@ if __name__ == '__main__':
 
         proximal_vector = Twist()
 
-        o_k = level_of_distance(math.sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z))
+        o_k = level_of_distance(
+            math.sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z))
         o_des = 7  # Constant to reach waypoints
         C = 5.0  # Constant in the formula
 
@@ -115,8 +118,8 @@ if __name__ == '__main__':
         else:
             f_k = (o_k - o_des) ** 2 / C
 
-        proximal_vector.linear.x = f_k * cos_yaw 
-        proximal_vector.linear.y = f_k * sin_yaw 
+        proximal_vector.linear.x = f_k * cos_yaw
+        proximal_vector.linear.y = f_k * sin_yaw
 
         ################################
         ## DESIRED  HEADING  VECTOR   ##
@@ -124,7 +127,7 @@ if __name__ == '__main__':
 
         alpha = Twist()
         beta = 2.0
-        
+
         cos_alpha = heading_vector.linear.x + beta * proximal_vector.linear.x
         sin_alpha = heading_vector.linear.y + beta * proximal_vector.linear.y
         norm_alpha = math.sqrt(sin_alpha * sin_alpha + cos_alpha * cos_alpha)
@@ -135,10 +138,11 @@ if __name__ == '__main__':
         ################################
         ## MOTION CONTROL BEHAVIOR    ##
         ################################
-        
-        u_max = 2.0
 
-        dot_product = alpha.linear.x * math.cos(position[3]) + alpha.linear.y * math.sin(position[3])
+        u_max = 2.25
+
+        dot_product = alpha.linear.x * \
+            math.cos(position[3]) + alpha.linear.y * math.sin(position[3])
 
         msg.linear.x = dot_product * u_max if (dot_product > 0) else 0
         msg.linear.z = delta_z
@@ -147,11 +151,15 @@ if __name__ == '__main__':
         if (o_k == o_des):
             i = (i + 1) % len(wps)
             rospy.logerr('i is updated to ' + str(i))
-        
-        rospy.loginfo_throttle(1, 'a:(%3.2f, %3.2f) x a_c:(%3.2f, %3.2f) == %4.2f' % (alpha.linear.x, alpha.linear.y, math.cos(position[3]),  math.sin(position[3]), dot_product))
-        rospy.loginfo_throttle(1,'distance is %3.2f at level %d' % (math.sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z),   o_k))
-        rospy.loginfo_throttle(1,'x:%3.2f y:%3.2f z:%3.2f w:%3.2f' % tuple(position))
-        rospy.loginfo_throttle(1, 'x:%3.2f y:%3.2f z:%3.2f ------' % (delta_x, delta_y, delta_z))
+
+        rospy.loginfo_throttle(1, 'a:(%3.2f, %3.2f) x a_c:(%3.2f, %3.2f) == %4.2f' % (
+            alpha.linear.x, alpha.linear.y, math.cos(position[3]),  math.sin(position[3]), dot_product))
+        rospy.loginfo_throttle(1, 'distance is %3.2f at level %d' % (
+            math.sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z),   o_k))
+        rospy.loginfo_throttle(
+            1, 'x:%3.2f y:%3.2f z:%3.2f w:%3.2f' % tuple(position))
+        rospy.loginfo_throttle(
+            1, 'x:%3.2f y:%3.2f z:%3.2f ------' % (delta_x, delta_y, delta_z))
 
         pub.publish(msg)
 
