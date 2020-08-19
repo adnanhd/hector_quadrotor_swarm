@@ -3,9 +3,9 @@
         <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
             <arg name="name" value="uav4" />
             <arg name="tf_prefix" value="uav4" />
-            <arg name="x" value="-8.0" />
-            <arg name="y" value="8.0" />
+            <arg name="x" value="-5.0" />
+            <arg name="y" value="4.0" />
         </include>
-        <node name="slave" pkg="hectorquad2" type="slave_test.py" output="screen" args="uav1 uav2 uav3 uav5" />
+        <node name="slave" pkg="hectorquad2" type="slave_driver.py" output="screen" args="uav1 uav2 uav3 uav5" />
     </group>
 </launch>

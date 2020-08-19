@@ -64,10 +64,10 @@ def level_of_distance(distance):
 
 
 if __name__ == '__main__':
-    wps = [(15, 15, 10), (15, -15, 10), (-15, -15, 10), (-15, 15, 10)]
+    wps = [(10, 10, 10), (10, -10, 10), (-10, -10, 10), (-10, 10, 10)]
     position = [0, 0, 0, 0]
     msg = Twist()
-    K_p = 2.0
+    K_p = 0.5
     i = 0
 
     rospy.init_node('master', anonymous=True)
@@ -136,21 +136,22 @@ if __name__ == '__main__':
         ## MOTION CONTROL BEHAVIOR    ##
         ################################
         
-        u_max = 5.0
+        u_max = 2.0
 
-        dot_product = alpha.linear.x * math.cos(position[3]) + alpha.linear.y + math.sin(position[3])
+        dot_product = alpha.linear.x * math.cos(position[3]) + alpha.linear.y * math.sin(position[3])
 
         msg.linear.x = dot_product * u_max if (dot_product > 0) else 0
         msg.linear.z = delta_z
-        msg.angular.z = (yaw - position[3]) * K_p
+        msg.angular.z = (math.atan2(sin_alpha, cos_alpha) - position[3]) * K_p
 
         if (o_k == o_des):
             i = (i + 1) % len(wps)
+            rospy.logerr('i is updated to ' + str(i))
         
-        if (o_k == 0): 
-            rospy.loginfo_throttle(1,'distance is unknown %3.2f' % math.sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z))
-            rospy.loginfo_throttle(1,'x:%3.2f y:%3.2f z:%3.2f w:%3.2f' % tuple(position))
-            rospy.loginfo_throttle(1, 'x:%3.2f y:%3.2f z:%3.2f ------' % (delta_x, delta_y, delta_z))
+        rospy.loginfo_throttle(1, 'a:(%3.2f, %3.2f) x a_c:(%3.2f, %3.2f) == %4.2f' % (alpha.linear.x, alpha.linear.y, math.cos(position[3]),  math.sin(position[3]), dot_product))
+        rospy.loginfo_throttle(1,'distance is %3.2f at level %d' % (math.sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z),   o_k))
+        rospy.loginfo_throttle(1,'x:%3.2f y:%3.2f z:%3.2f w:%3.2f' % tuple(position))
+        rospy.loginfo_throttle(1, 'x:%3.2f y:%3.2f z:%3.2f ------' % (delta_x, delta_y, delta_z))
 
         pub.publish(msg)
 

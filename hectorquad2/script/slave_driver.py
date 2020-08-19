@@ -7,7 +7,7 @@ from geometry_msgs.msg import Twist, Quaternion, PoseStamped
 epsion = 0.001
 
 
-def slave_callback(msg, pose):
+def slave_callback(msg, slave):
     """
     This is a callback function of type PoseStamped in geometry_msgs
 
@@ -27,10 +27,15 @@ def slave_callback(msg, pose):
         nothing
     -------
     """
-    global slave_pose
-    # Update the agent's position as soon as the topic
+    # Update the slave's position as soon as the topic
     # ground_truth_to_tf/pose published
-    slave_pose = msg
+    slave.pose.position.x = msg.pose.position.x
+    slave.pose.position.x = msg.pose.position.x
+    slave.pose.position.x = msg.pose.position.x
+    slave.pose.orientation.x = msg.pose.orientation.x
+    slave.pose.orientation.y = msg.pose.orientation.y
+    slave.pose.orientation.z = msg.pose.orientation.z
+    slave.pose.orientation.w = msg.pose.orientation.w
 
 
 def agent_callback(msg, args):
@@ -58,14 +63,20 @@ def agent_callback(msg, args):
     # initializing agents index and updating its position in the list
     swarm_pose = args[0]
     agent_index = args[1]
-    swarm_pose[agent_index] = msg
+    swarm_pose[agent_index].pose.position.x = msg.pose.position.x
+    swarm_pose[agent_index].pose.position.x = msg.pose.position.x
+    swarm_pose[agent_index].pose.position.x = msg.pose.position.x
+    swarm_pose[agent_index].pose.orientation.x = msg.pose.orientation.x
+    swarm_pose[agent_index].pose.orientation.y = msg.pose.orientation.y
+    swarm_pose[agent_index].pose.orientation.z = msg.pose.orientation.z
+    swarm_pose[agent_index].pose.orientation.w = msg.pose.orientation.w
 
 
 def Quad2Euler(q):
     """
     This function transforms from quernion to euler
 
-    TODO: Extended description of function.
+    For details, see https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles#Quaternion_to_Euler_Angles_Conversion
 
     Parameters
     ----------
@@ -78,7 +89,6 @@ def Quad2Euler(q):
     int
         Description of return value
     """
-    # @see https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles#Quaternion_to_Euler_Angles_Conversion
     # roll (x-axis rotation)
     sinr_cosp = 2 * (q.w * q.x + q.y * q.z)
     cosr_cosp = 1 - 2 * (q.x * q.x + q.y * q.y)
@@ -102,12 +112,13 @@ def Quad2Euler(q):
     return (roll, pitch, yaw)
 
 
-def TwistToStr(twist):
-    return '[x:%2.1f y:%2.1f z:%2.1f][x:%2.1f y:%2.1f z:%2.1f]' % (twist.linear.x, twist.linear.y, twist.linear.z, twist.angular.x, twist.angular.y, twist.angular.z)
-
-
-def PoseToStr(pose):
-    return '[x:%2.1f y:%2.1f z:%2.1f][x:%2.1f y:%2.1f z:%2.1f]' % (pose.pose.position.x, pose.pose.position.y, pose.pose.position.z, pose.pose.orientation.x, pose.pose.orientation.y, pose.pose.orientation.z)
+def level_of_distance(distance):
+    if distance < 3:
+        return 7
+    elif distance < 50:
+        return int(8 / math.log(distance))
+    else:
+        return 0
 
 
 if __name__ == '__main__':
@@ -122,7 +133,7 @@ if __name__ == '__main__':
     # initialize slave_vel with a Twist() object to update velocity information
     # of the slave
     slave_vel = Twist()
-    z_yaw = 0  # not used
+    slave_aw = 0  # not used
 
     # Initialize node to controll the agent
     rospy.init_node('slave', anonymous=True)
@@ -150,113 +161,94 @@ if __name__ == '__main__':
         ## heading alignment behaviour ##
         #################################
 
-        cos_yaw = 0  # projection of z-axis rotation (yaw) onto x-axix
-        sin_yaw = 0  # projection of z-axis rotation (yaw) onto y-axix
+        cos_agent_yaw = 0  # projection of the current z-axis rotation (yaw) onto x-axix
+        sin_agent_yaw = 0  # projection of the current z-axis rotation (yaw) onto y-axix
 
         for agent in swarm_pose:
-            # For each position vector `agent`, of type PoseStamped() containing position information 
+            # For each position vector `agent`, of type PoseStamped() containing position information
             # of other agents in the swarm, corresponding direction angle in xy-plane is found and ac-
-            # cumulate to pitch and roll values
-            z_yaw = Quad2Euler(agent.pose.orientation)[2]
-            cos_yaw += math.cos(z_yaw)
-            sin_yaw += math.sin(z_yaw)
+            # cumulate to sine and consine of yaw value
+            agent_yaw = Quad2Euler(agent.pose.orientation)[2] # the agent's current z-axis rotation (yaw)
+            cos_swarm_yaw += math.cos(agent_yaw) # projection of the agent's current z-axis rotation (yaw) onto x-axis
+            sin_swarm_yaw += math.sin(agent_yaw) # projection of the agent's current z-axis rotation (yaw) onto y-axis
 
-        # The norm is the hypothenuse of the right angle of roll, pitch and angle: update expalanation
-        norm = math.sqrt((cos_yaw * cos_yaw) + (sin_yaw * sin_yaw))
+        # hypotenuse of total cumulative yaw angle
+        norm_swarm_yaw = math.sqrt(cos_swarm_yaw * cos_swarm_yaw + sin_swarm_yaw * sin_swarm_yaw)
 
         # initialize a heading_vector
-        if abs(norm) < epsion:  # epsilon is very close to zero
+        if abs(norm_swarm_yaw) < epsion:  # epsilon is very close to zero
             heading_vector.linear.x = 0
             heading_vector.linear.y = 0
         else:
-            heading_vector.linear.x = cos_yaw / norm
-            heading_vector.linear.y = sin_yaw / norm
+            heading_vector.linear.x = cos_swarm_yaw / norm_swarm_yaw
+            heading_vector.linear.y = sin_swarm_yaw / norm_swarm_yaw
 
         ################################
         ## proximal control behaviour ##
         ################################
 
         position_vector = Twist()
-        o_des = 1.75  # Constant in the formula
-        force = 0
+        o_des = 4  # Constant in the formula
         C = 5  # Constant in the formula
 
         for agent_pose in swarm_pose:
             # for the current and each agent in the swarm, find the difference in between and in all three axes
-            d_x = agent_pose.pose.position.x - slave_pose.pose.position.x
-            d_y = agent_pose.pose.position.y - slave_pose.pose.position.y
-            d_z = agent_pose.pose.position.z - slave_pose.pose.position.z
+            delta_x = agent_pose.pose.position.x - slave_pose.pose.position.x
+            delta_y = agent_pose.pose.position.y - slave_pose.pose.position.y
+            delta_z = agent_pose.pose.position.z - slave_pose.pose.position.z
 
             # Find distance from the difference in three axes
-            distance = math.sqrt(d_x * d_x + d_y * d_y + d_z * d_z)
+            o_k = level_of_distance(math.sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z))
 
             # If the distance, i.e. the agent, is far from how much it is supposed to be,
-            if distance > o_des:
+            if o_k >= o_des:
                 # increment force f_k by ((o_des - o_k))^2 / C
-                force += ((o_des - distance) ** 2) / C
+                force = -((o_des - o_k) ** 2) / C
             else:
                 # otherwise, decrement by ((o_des - o_k))^2 / C.
-                force -= ((o_des - distance) ** 2) / C
+                force = ((o_des - o_k) ** 2) / C
 
-        # update position vector with corresponding position vector
-        position_vector.linear.x = slave_pose.pose.position.x * force
-        position_vector.linear.y = slave_pose.pose.position.y * force
-        position_vector.linear.z = slave_pose.pose.position.z * force
+            agent_yaw = math.atan2(delta_y, delta_x)
+
+            # update position vector with corresponding position vector
+            position_vector.linear.x += math.cos(agent_yaw) * force
+            position_vector.linear.y += math.sin(agent_yaw) * force
 
         ############################
         ## desired heading vector ##
         ############################
 
         # Desired Heading Vector 'a' is initialized with a Twist() object
-        a = Twist()
+        alpha = Twist()
+        beta = 8  # Constant in the formula
 
         # initializing the numerators in 3 axes of Desired Heading Vector and the denominator
-        numerator_x = 0
-        numerator_y = 0
-        numerator_z = 0
-        denominator = 0
-        Beta = 12  # Constant in the formula
+        cos_alpha = heading_vector.linear.x + beta * position_vector.linear.x
+        sin_alpha = heading_vector.linear.y + beta * position_vector.linear.y
+        nor_alpha = math.sqrt(cos_alpha * cos_alpha + sin_alpha * sin_alpha)
 
-        # updating numerators with heading vector and proximal control vector in corresponding coodinate axis
-        numerator_x = heading_vector.linear.x + \
-            (Beta * position_vector.linear.x)
-        numerator_y = heading_vector.linear.y + \
-            (Beta * position_vector.linear.y)
-        numerator_z = heading_vector.linear.z + \
-            (Beta * position_vector.linear.z)
-
-        # updating denominator with the norm of numerators
-        denominator = math.sqrt((numerator_x * numerator_x) +
-                                (numerator_y * numerator_y) + (numerator_z * numerator_z))
-
-        if abs(denominator) < epsion:  # epsilon is very close to zero
-            # if denominator is zero, then the numerators in all axes are all zero
-            a.linear.x = 0
-            a.linear.y = 0
-            a.linear.z = 0
-        else:
-            a.linear.x = numerator_x / denominator
-            a.linear.y = numerator_y / denominator
-            a.linear.z = numerator_z / denominator
+        alpha.linear.x = cos_alpha / nor_alpha
+        alpha.linear.y = sin_alpha / nor_alpha
 
         ####################
         ## motion control ##
         ####################
+        
+        # updating numerators with heading vector and proximal control vector in corresponding coodinate axis
+        u_max = 2.2
 
-        K_c = 7.0  # Constant in the formula
+        alpha_cur = Quad2Euler(slave_pose.pose.orientation)[2]
 
-        dot_product = (a.linear.x * slave_pose.pose.position.x) + \
-            (a.linear.y * slave_pose.pose.position.y)
-        if dot_product >= 0:
-            slave_vel.linear.y = (dot_product ** 1) * K_c
-        else:
-            slave_vel.linear.y = 0
+        dot_product = alpha.linear.x * math.cos(alpha_cur) + alpha.linear.y * math.sin(alpha_cur)
 
-        if math.sqrt(a.linear.x ** 2 + a.linear.y ** 2) * math.sqrt(slave_pose.pose.position.x ** 2 + slave_pose.pose.position.y ** 2) != 0:
-            slave_vel.angular.z = math.acos(dot_product / (math.sqrt(a.linear.x ** 2 + a.linear.y ** 2)
-                                                           * math.sqrt(slave_pose.pose.position.x ** 2 + slave_pose.pose.position.y ** 2))) * 0.5
+        # updating denominator with the norm of numerators
+        
+        K_p = 0.5  # Constant in the formula
 
-        if (slave_pose.pose.position.z < 5):
-            slave_vel.linear.z += 0.5
+        slave_vel.linear.x = dot_product * u_max if (dot_product > 0) else 0
+        slave_vel.linear.z = swarm_pose[0].pose.position.z - slave_pose.pose.position.z
+        slave_vel.angular.z = (math.atan2(sin_alpha, cos_alpha) -  alpha_cur) * K_p
+
+
         pub.publish(slave_vel)
         rate.sleep()
