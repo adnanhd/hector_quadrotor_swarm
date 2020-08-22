@@ -64,8 +64,8 @@ def level_of_distance(distance):
 
 
 if __name__ == '__main__':
-    wps = [(8, 6, 15), (6, 8, 10), (0, 10, 10), (-6, 8, 15), (-8, 6, 10), (-10, 0, 10),
-           (-8, -6, 15), (-6, -8, 10), (0, -10, 10), (6, -8, 15), (8, -6, 10), (10, 0, 10)]
+    wps = [(8, 6, 10), (6, 8, 10), (0, 10, 10), (-6, 8, 10), (-8, 6, 10), (-10, 0, 10),
+           (-8, -6, 10), (-6, -8, 10), (0, -10, 10), (6, -8, 10), (8, -6, 10), (10, 0, 10)]
 
     position = [0, 0, 0, 0]
     msg = Twist()
@@ -152,14 +152,8 @@ if __name__ == '__main__':
             i = (i + 1) % len(wps)
             rospy.logerr('i is updated to ' + str(i))
 
-        rospy.loginfo_throttle(1, 'a:(%3.2f, %3.2f) x a_c:(%3.2f, %3.2f) == %4.2f' % (
-            alpha.linear.x, alpha.linear.y, math.cos(position[3]),  math.sin(position[3]), dot_product))
-        rospy.loginfo_throttle(1, 'distance is %3.2f at level %d' % (
-            math.sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z),   o_k))
-        rospy.loginfo_throttle(
-            1, 'x:%3.2f y:%3.2f z:%3.2f w:%3.2f' % tuple(position))
-        rospy.loginfo_throttle(
-            1, 'x:%3.2f y:%3.2f z:%3.2f ------' % (delta_x, delta_y, delta_z))
+        rospy.loginfo_throttle(4.0, '(%3.2f - %3.2f) * K_p == %3.2f' (
+            math.atan2(sin_alpha, cos_alpha), position[3], msg.angular.z))
 
         pub.publish(msg)
 
