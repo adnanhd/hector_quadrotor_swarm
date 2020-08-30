@@ -8,10 +8,8 @@ This package is created for kovan summer internship by
 @author Abulla Ahmadkhan
 """
 
-import sys
 import rospy
 import math
-from random import random
 from geometry_msgs.msg import Twist, Quaternion, PoseStamped, Pose
 epsion = 0.001
 
