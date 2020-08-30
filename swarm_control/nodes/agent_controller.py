@@ -1,4 +1,12 @@
 #!/usr/bin/env python
+"""@package swarm_control
+Package applies self-organized flocking behavior for a given agent
+
+This package is created for kovan summer internship by
+@see self-organized flocking behavior
+@author Adnan Harun DOGAN
+@author Abulla Ahmadkhan
+"""
 
 import sys
 import rospy
@@ -125,9 +133,6 @@ def level_of_distance_bwtn(a, s):
 
 
 if __name__ == '__main__':
-    ###########################################################################################
-    #################################      MAIN FUNCTION      #################################
-    ###########################################################################################
     wps = [(8, 6, 10), (6, 8, 10), (0, 10, 10), (-6, 8, 10), (-8, 6, 10), (-10, 0, 10),
            (-8, -6, 10), (-6, -8, 10), (0, -10, 10), (6, -8, 10), (8, -6, 10), (10, 0, 10)]
 
