@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<launch>
+    <arg name="model" default="$(find hector_quadrotor_description)/urdf/quadrotor.gazebo.xacro" />
+
+    <group ns="uav2">
+        <include file="$(find hector_quadrotor_gazebo)/launch/spawn_quadrotor.launch">
+            <arg name="name" value="uav2" />
+            <arg name="tf_prefix" value="uav2" />
+            <arg name="model" value="$(arg model)" />
+            <arg name="x" value="+5.0" />
+            <arg name="y" value="+0.0" />
+        </include>
+
+        <node name="slave" pkg="hectorquad2" type="agent_controller.py" output="screen" args="uav1" />
+    </group>
+</launch>
