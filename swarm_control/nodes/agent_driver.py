@@ -219,7 +219,7 @@ if __name__ == '__main__':
         sin_pose = 0
 
         for agent in swarm_pose:
-            # Find distance from the difference in three axes
+            # Find distance from the difference in two axes
             o_k = level_of_distance_bwtn(agent.position, slave.position)
 
             # If the distance, i.e. the agent, is far from how much it is supposed to be,
