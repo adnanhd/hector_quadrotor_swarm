@@ -1,0 +1,239 @@
+\hypertarget{namespaceagent__controller}{}\section{agent\+\_\+controller Namespace Reference}
+\label{namespaceagent__controller}\index{agent\+\_\+controller@{agent\+\_\+controller}}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{namespaceagent__controller_a5543c9bb238164e273f7500b92d09d20}{slave\+\_\+callback} (msg, slave)
+\item 
+def \hyperlink{namespaceagent__controller_a42656b08b67869c193f0cab8be00a83d}{agent\+\_\+callback} (msg, args)
+\item 
+def \hyperlink{namespaceagent__controller_a2a75c52da3a09e2b598dd55a4d4436ec}{Quad2\+Euler} (q)
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_a4cc68e29b1a4d4c48f6f8a2f2da6c0d5}\label{namespaceagent__controller_a4cc68e29b1a4d4c48f6f8a2f2da6c0d5}} 
+def {\bfseries level\+\_\+of\+\_\+distance\+\_\+bwtn} (a, s)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_ad7a00c27d31b9f6a3fd9af880731934b}\label{namespaceagent__controller_ad7a00c27d31b9f6a3fd9af880731934b}} 
+float {\bfseries epsion} = 0.\+001
+\item 
+list {\bfseries wps}
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_ab9e2ce4738767876fa9f391f23384500}\label{namespaceagent__controller_ab9e2ce4738767876fa9f391f23384500}} 
+int {\bfseries i} = 0
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_a3de7a0976ad866cf02b7008a59ca9a78}\label{namespaceagent__controller_a3de7a0976ad866cf02b7008a59ca9a78}} 
+int {\bfseries o\+\_\+des} = 5
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_a3e1ed2523d9f79af1596f08d24b6d464}\label{namespaceagent__controller_a3e1ed2523d9f79af1596f08d24b6d464}} 
+int {\bfseries C} = 5
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_a4d0c0bc26870392d8bf555b2a44767bc}\label{namespaceagent__controller_a4d0c0bc26870392d8bf555b2a44767bc}} 
+int {\bfseries gamma} = -\/1 else 0
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_ace0dab1a9f4d3f1b1c0ae7546d11c4de}\label{namespaceagent__controller_ace0dab1a9f4d3f1b1c0ae7546d11c4de}} 
+int {\bfseries beta} = 12
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_adb417c83bc42435d9669a8353775766a}\label{namespaceagent__controller_adb417c83bc42435d9669a8353775766a}} 
+float {\bfseries u\+\_\+max} = 2.\+50
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_a8e57c3b7970f52dff236ba8664c3277e}\label{namespaceagent__controller_a8e57c3b7970f52dff236ba8664c3277e}} 
+float {\bfseries K\+\_\+p} = 1.\+0
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_a77987b27b95b28b655a5bb38301b30b3}\label{namespaceagent__controller_a77987b27b95b28b655a5bb38301b30b3}} 
+{\bfseries swarm} = rospy.\+myargv()\mbox{[}1\+:\mbox{]}
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_ae815604176bd737fe140fb8872abad4c}\label{namespaceagent__controller_ae815604176bd737fe140fb8872abad4c}} 
+list {\bfseries swarm\+\_\+pose} = \mbox{[}Pose()\mbox{]} $\ast$ len(swarm)
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_a197ff1b8e39725f9fca34b17bb38e046}\label{namespaceagent__controller_a197ff1b8e39725f9fca34b17bb38e046}} 
+{\bfseries slave} = Pose()
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_a21f7a1bceed0d377473179942ed410f7}\label{namespaceagent__controller_a21f7a1bceed0d377473179942ed410f7}} 
+{\bfseries msg} = Twist()
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_a7b24afa3606e68565ceaa4a6ca9bbd50}\label{namespaceagent__controller_a7b24afa3606e68565ceaa4a6ca9bbd50}} 
+{\bfseries anonymous}
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_a07be4f7cec001d2878236ea786649ad7}\label{namespaceagent__controller_a07be4f7cec001d2878236ea786649ad7}} 
+{\bfseries pub} = rospy.\+Publisher(\textquotesingle{}cmd\+\_\+vel\textquotesingle{}, Twist, queue\+\_\+size=10)
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_a729b11b1f868460723947e010610b756}\label{namespaceagent__controller_a729b11b1f868460723947e010610b756}} 
+{\bfseries rate} = rospy.\+Rate(100)
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_a6f0b0c5fb7c1edc941a504035a9f6f33}\label{namespaceagent__controller_a6f0b0c5fb7c1edc941a504035a9f6f33}} 
+def {\bfseries slave\+\_\+yaw} = \hyperlink{namespaceagent__controller_a2a75c52da3a09e2b598dd55a4d4436ec}{Quad2\+Euler}(slave.\+orientation)\mbox{[}2\mbox{]}
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_a1ac28018d7a616c8da57a370df4f8aea}\label{namespaceagent__controller_a1ac28018d7a616c8da57a370df4f8aea}} 
+int \hyperlink{namespaceagent__controller_a1ac28018d7a616c8da57a370df4f8aea}{total\+\_\+yaw} = 0
+\begin{DoxyCompactList}\small\item\em heading alignment behaviour \#\# \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespaceagent__controller_ab8d29a87f0460880d00fbce326df51b0}\label{namespaceagent__controller_ab8d29a87f0460880d00fbce326df51b0}} 
+{\bfseries cos\+\_\+head}
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_a6db4877daa086817162541d4ef635085}\label{namespaceagent__controller_a6db4877daa086817162541d4ef635085}} 
+{\bfseries sin\+\_\+head}
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_aabbeeec31bfb6dc26d18cdd4176eeca4}\label{namespaceagent__controller_aabbeeec31bfb6dc26d18cdd4176eeca4}} 
+int \hyperlink{namespaceagent__controller_aabbeeec31bfb6dc26d18cdd4176eeca4}{cos\+\_\+pose} = 0
+\begin{DoxyCompactList}\small\item\em proximal control behaviour \#\# \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespaceagent__controller_a95f2cc7b1f1f47547f926e0d37f1ce70}\label{namespaceagent__controller_a95f2cc7b1f1f47547f926e0d37f1ce70}} 
+int {\bfseries sin\+\_\+pose} = 0
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_ac014c161712e28190b07e334e18ebed3}\label{namespaceagent__controller_ac014c161712e28190b07e334e18ebed3}} 
+def {\bfseries o\+\_\+k} = level\+\_\+of\+\_\+distance\+\_\+bwtn(agent.\+position, slave.\+position)
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_a4a11194757c4c08336166689bf0769e2}\label{namespaceagent__controller_a4a11194757c4c08336166689bf0769e2}} 
+int {\bfseries force} = -\/((o\+\_\+des -\/ o\+\_\+k) $\ast$$\ast$ 2) / C
+\item 
+{\bfseries disp\+\_\+angle}
+\item 
+\hyperlink{namespaceagent__controller_a6a5de8c478e70c41a2c478775c929cc4}{pref\+\_\+yaw}
+\begin{DoxyCompactList}\small\item\em direction preference vector \#\# \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespaceagent__controller_a1fc80d4b0128e673c95daa8dbabf1369}\label{namespaceagent__controller_a1fc80d4b0128e673c95daa8dbabf1369}} 
+def {\bfseries delta} = \hyperlink{namespaceagent__controller_a6a5de8c478e70c41a2c478775c929cc4}{pref\+\_\+yaw} -\/ slave\+\_\+yaw
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_af55b643e95edd2f6f1df4d088a407e8c}\label{namespaceagent__controller_af55b643e95edd2f6f1df4d088a407e8c}} 
+int \hyperlink{namespaceagent__controller_af55b643e95edd2f6f1df4d088a407e8c}{cos\+\_\+alpha} = cos\+\_\+head + beta $\ast$ \hyperlink{namespaceagent__controller_aabbeeec31bfb6dc26d18cdd4176eeca4}{cos\+\_\+pose} + gamma $\ast$ math.\+cos(delta)
+\begin{DoxyCompactList}\small\item\em desired heading vector \#\# \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespaceagent__controller_ad92b87292cf41546e35b7c14354cc63a}\label{namespaceagent__controller_ad92b87292cf41546e35b7c14354cc63a}} 
+int {\bfseries sin\+\_\+alpha} = sin\+\_\+head + beta $\ast$ sin\+\_\+pose + gamma $\ast$ math.\+sin(delta)
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_a16c0618e8797d4ea6a367768a04872e8}\label{namespaceagent__controller_a16c0618e8797d4ea6a367768a04872e8}} 
+{\bfseries alpha} = math.\+atan2(sin\+\_\+alpha, \hyperlink{namespaceagent__controller_af55b643e95edd2f6f1df4d088a407e8c}{cos\+\_\+alpha})
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_a7150a49691571fb6bb0e252e4f051dd9}\label{namespaceagent__controller_a7150a49691571fb6bb0e252e4f051dd9}} 
+\hyperlink{namespaceagent__controller_a7150a49691571fb6bb0e252e4f051dd9}{dot\+\_\+p} = math.\+cos(alpha) $\ast$ math.\+cos(slave\+\_\+yaw) + \textbackslash{}
+\begin{DoxyCompactList}\small\item\em motion control \#\# \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{namespaceagent__controller_aedf3a877b6722078247f8da23495622a}\label{namespaceagent__controller_aedf3a877b6722078247f8da23495622a}} 
+{\bfseries x}
+\item 
+\mbox{\Hypertarget{namespaceagent__controller_a6b89bc6fab035bb3fff5f4b274e0c787}\label{namespaceagent__controller_a6b89bc6fab035bb3fff5f4b274e0c787}} 
+{\bfseries z}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}@package swarm_control
+Package applies self-organized flocking behavior for a given agent
+
+This package is created for kovan summer internship by
+@see self-organized flocking behavior
+@author Adnan Harun DOGAN
+@author Abulla Ahmadkhan
+\end{DoxyVerb}
+ 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespaceagent__controller_a42656b08b67869c193f0cab8be00a83d}\label{namespaceagent__controller_a42656b08b67869c193f0cab8be00a83d}} 
+\index{agent\+\_\+controller@{agent\+\_\+controller}!agent\+\_\+callback@{agent\+\_\+callback}}
+\index{agent\+\_\+callback@{agent\+\_\+callback}!agent\+\_\+controller@{agent\+\_\+controller}}
+\subsubsection{\texorpdfstring{agent\+\_\+callback()}{agent\_callback()}}
+{\footnotesize\ttfamily def agent\+\_\+controller.\+agent\+\_\+callback (\begin{DoxyParamCaption}\item[{}]{msg,  }\item[{}]{args }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}This is a callback function of type PoseStamped in geometry_msgs
+
+This function updates args[1]th element of the list args[0] of type
+list of PoseStamped() with msg of type PoseStamped()
+
+Parameters
+----------
+msg : PoseStamped()
+        This is a message of topic ground_truth_to_tf/pose containing
+        location and orientation information of the agent to be call-
+        backed
+args: ([Pose()], int)
+        This is a pair (2-tuple) of the list of agents' positions in
+        the swarm and the index of the agent whose pose is published
+        to be updated in the list
+
+Returns
+    nothing
+-------
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceagent__controller_a2a75c52da3a09e2b598dd55a4d4436ec}\label{namespaceagent__controller_a2a75c52da3a09e2b598dd55a4d4436ec}} 
+\index{agent\+\_\+controller@{agent\+\_\+controller}!Quad2\+Euler@{Quad2\+Euler}}
+\index{Quad2\+Euler@{Quad2\+Euler}!agent\+\_\+controller@{agent\+\_\+controller}}
+\subsubsection{\texorpdfstring{Quad2\+Euler()}{Quad2Euler()}}
+{\footnotesize\ttfamily def agent\+\_\+controller.\+Quad2\+Euler (\begin{DoxyParamCaption}\item[{}]{q }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}This function transforms from quernion to euler
+
+#Quaternion_to_Euler_Angles_Conversion
+For details, see https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
+
+Parameters
+----------
+q : Pose().orientation
+    This is an orientation vector in queternion form
+
+Returns
+    The euler form of the parameter q
+-------
+int
+    Description of return value
+\end{DoxyVerb}
+ \mbox{\Hypertarget{namespaceagent__controller_a5543c9bb238164e273f7500b92d09d20}\label{namespaceagent__controller_a5543c9bb238164e273f7500b92d09d20}} 
+\index{agent\+\_\+controller@{agent\+\_\+controller}!slave\+\_\+callback@{slave\+\_\+callback}}
+\index{slave\+\_\+callback@{slave\+\_\+callback}!agent\+\_\+controller@{agent\+\_\+controller}}
+\subsubsection{\texorpdfstring{slave\+\_\+callback()}{slave\_callback()}}
+{\footnotesize\ttfamily def agent\+\_\+controller.\+slave\+\_\+callback (\begin{DoxyParamCaption}\item[{}]{msg,  }\item[{}]{slave }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}This is a callback function of type PoseStamped in geometry_msgs
+
+Updates slaves own position, stored in pose of type PoseStamped(),
+with msg, of type PoseStamped().
+
+Parameters
+----------
+msg : PoseStamped()
+        This is a message of topic ground_truth_to_tf/pose containing
+        location and orientation information of the agent
+slave: Pose()
+        This is a variable to keep up-to-date the location and orien-
+        tation information of the agent
+
+Returns
+    nothing
+-------
+\end{DoxyVerb}
+ 
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{namespaceagent__controller_a29386e2a8268faa8f21ec178b032620c}\label{namespaceagent__controller_a29386e2a8268faa8f21ec178b032620c}} 
+\index{agent\+\_\+controller@{agent\+\_\+controller}!disp\+\_\+angle@{disp\+\_\+angle}}
+\index{disp\+\_\+angle@{disp\+\_\+angle}!agent\+\_\+controller@{agent\+\_\+controller}}
+\subsubsection{\texorpdfstring{disp\+\_\+angle}{disp\_angle}}
+{\footnotesize\ttfamily agent\+\_\+controller.\+disp\+\_\+angle}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+1 =  math.atan2(
+2                 agent.position.y - slave.position.y,  agent.position.x - slave.position.x)
+\end{DoxyCode}
+\mbox{\Hypertarget{namespaceagent__controller_a6a5de8c478e70c41a2c478775c929cc4}\label{namespaceagent__controller_a6a5de8c478e70c41a2c478775c929cc4}} 
+\index{agent\+\_\+controller@{agent\+\_\+controller}!pref\+\_\+yaw@{pref\+\_\+yaw}}
+\index{pref\+\_\+yaw@{pref\+\_\+yaw}!agent\+\_\+controller@{agent\+\_\+controller}}
+\subsubsection{\texorpdfstring{pref\+\_\+yaw}{pref\_yaw}}
+{\footnotesize\ttfamily agent\+\_\+controller.\+pref\+\_\+yaw}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+1 =  math.atan2(
+2             wps[i][1] - slave.position.y, wps[i][0] - slave.position.x)
+\end{DoxyCode}
+
+
+direction preference vector \#\# 
+
+\mbox{\Hypertarget{namespaceagent__controller_a9cdba1b55c324bd9d017fc050ebc822e}\label{namespaceagent__controller_a9cdba1b55c324bd9d017fc050ebc822e}} 
+\index{agent\+\_\+controller@{agent\+\_\+controller}!wps@{wps}}
+\index{wps@{wps}!agent\+\_\+controller@{agent\+\_\+controller}}
+\subsubsection{\texorpdfstring{wps}{wps}}
+{\footnotesize\ttfamily list agent\+\_\+controller.\+wps}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+1 =  [(8, 6, 10), (6, 8, 10), (0, 10, 10), (-6, 8, 10), (-8, 6, 10), (-10, 0, 10),
+2            (-8, -6, 10), (-6, -8, 10), (0, -10, 10), (6, -8, 10), (8, -6, 10), (10, 0, 10)]
+\end{DoxyCode}

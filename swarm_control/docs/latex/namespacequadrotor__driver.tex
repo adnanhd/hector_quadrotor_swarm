@@ -1,0 +1,59 @@
+\hypertarget{namespacequadrotor__driver}{}\section{quadrotor\+\_\+driver Namespace Reference}
+\label{namespacequadrotor__driver}\index{quadrotor\+\_\+driver@{quadrotor\+\_\+driver}}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespacequadrotor__driver_ad9bac97ee58c1030274c90f7b78ac498}\label{namespacequadrotor__driver_ad9bac97ee58c1030274c90f7b78ac498}} 
+def {\bfseries focal\+\_\+control} (msg)
+\item 
+\mbox{\Hypertarget{namespacequadrotor__driver_ac0b8990e733f5d837acaba7cdbe2ffbe}\label{namespacequadrotor__driver_ac0b8990e733f5d837acaba7cdbe2ffbe}} 
+def {\bfseries proximal\+\_\+control} (msg)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespacequadrotor__driver_a0b593d1d89053fdbb65ef11a4523eb77}\label{namespacequadrotor__driver_a0b593d1d89053fdbb65ef11a4523eb77}} 
+list {\bfseries msg\+\_\+twist} = \mbox{[}0, 0, 0, 1.\+0\mbox{]}
+\item 
+\mbox{\Hypertarget{namespacequadrotor__driver_adfe56e718f228b150e3d4a4654d8d603}\label{namespacequadrotor__driver_adfe56e718f228b150e3d4a4654d8d603}} 
+{\bfseries msg\+\_\+pose} = Pose\+Stamped()
+\item 
+\mbox{\Hypertarget{namespacequadrotor__driver_a33f11d47be5ca142ed1221dad3d6c571}\label{namespacequadrotor__driver_a33f11d47be5ca142ed1221dad3d6c571}} 
+{\bfseries num\+\_\+of\+\_\+drones} = len(rospy.\+myargv())
+\item 
+\mbox{\Hypertarget{namespacequadrotor__driver_acf8911932b4f8d86c391901738b5adb9}\label{namespacequadrotor__driver_acf8911932b4f8d86c391901738b5adb9}} 
+string {\bfseries node\+\_\+name} = 0 else \textquotesingle{}/\textquotesingle{} + rospy.\+myargv()\mbox{[}1\mbox{]}
+\item 
+\mbox{\Hypertarget{namespacequadrotor__driver_a79fc07d997df08f0442ad944e535e70b}\label{namespacequadrotor__driver_a79fc07d997df08f0442ad944e535e70b}} 
+{\bfseries anonymous}
+\item 
+\mbox{\Hypertarget{namespacequadrotor__driver_a38bc846606197a30453d1452c64737e0}\label{namespacequadrotor__driver_a38bc846606197a30453d1452c64737e0}} 
+{\bfseries pub} = rospy.\+Publisher(node\+\_\+name + \textquotesingle{}/cmd\+\_\+vel\textquotesingle{}, Twist, queue\+\_\+size=10)
+\item 
+\mbox{\Hypertarget{namespacequadrotor__driver_af447179b69c4fa50ec85c7de380f92f5}\label{namespacequadrotor__driver_af447179b69c4fa50ec85c7de380f92f5}} 
+{\bfseries rate} = rospy.\+Rate(5)
+\item 
+\mbox{\Hypertarget{namespacequadrotor__driver_a689bce98055097e8f737e85f56bfee56}\label{namespacequadrotor__driver_a689bce98055097e8f737e85f56bfee56}} 
+{\bfseries msg} = Twist()
+\item 
+\mbox{\Hypertarget{namespacequadrotor__driver_a173ac8b7108aa37b58caf78ce4990d5f}\label{namespacequadrotor__driver_a173ac8b7108aa37b58caf78ce4990d5f}} 
+{\bfseries x}
+\item 
+\mbox{\Hypertarget{namespacequadrotor__driver_aa87127954ea858229dde94266fe069b2}\label{namespacequadrotor__driver_aa87127954ea858229dde94266fe069b2}} 
+{\bfseries y}
+\item 
+\mbox{\Hypertarget{namespacequadrotor__driver_a67068a544ef0fd0fb6496a15d074fd91}\label{namespacequadrotor__driver_a67068a544ef0fd0fb6496a15d074fd91}} 
+{\bfseries z}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}@package swarm_control
+Package applies self-organized flocking behavior for a given agent
+
+This package is created for kovan summer internship by
+@see self-organized flocking behavior
+@author Adnan Harun DOGAN
+@author Abulla Ahmadkhan
+\end{DoxyVerb}
+ 
