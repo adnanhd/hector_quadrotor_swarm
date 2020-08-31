@@ -175,7 +175,7 @@ if __name__ == '__main__':
 
     while not rospy.is_shutdown():
         # Heading vector is one pillor of the swarm and here is initialized with a Twist() object
-        slave_yaw = Quad2Euler(slave.orientation)[2]
+        alpha_cur = Quad2Euler(slave.orientation)[2]
 
         #################################
         ## heading alignment behaviour ##
@@ -196,7 +196,7 @@ if __name__ == '__main__':
             cos_head, sin_head = math.cos(
                 total_yaw / len(swarm_pose)), math.sin(total_yaw / len(swarm_pose))
         else:
-            cos_head, sin_head = math.cos(slave_yaw), math.sin(slave_yaw)
+            cos_head, sin_head = math.cos(alpha_cur), math.sin(alpha_cur)
 
         ################################
         ## proximal control behaviour ##
@@ -231,7 +231,7 @@ if __name__ == '__main__':
         pref_yaw = math.atan2(
             wps[i][1] - slave.position.y, wps[i][0] - slave.position.x)
 
-        delta = pref_yaw - slave_yaw
+        delta = pref_yaw - alpha_cur
 
         if ((gamma != 0) and (math.sqrt((wps[i][0] - slave.position.x) ** 2 +
                                         (wps[i][1] - slave.position.y) ** 2 +
@@ -254,16 +254,16 @@ if __name__ == '__main__':
         ## motion control ##
         ####################
 
-        dot_p = math.cos(alpha) * math.cos(slave_yaw) + \
-            math.sin(alpha) * math.sin(slave_yaw)
+        dot_p = math.cos(alpha) * math.cos(alpha_cur) + \
+            math.sin(alpha) * math.sin(alpha_cur)
 
         # updating denominator with the norm of numerators
         msg.linear.x = dot_p * u_max if (dot_p > 0) else 0
         msg.linear.z = wps[i][2] - slave.position.z
-        msg.angular.z = (slave_yaw - alpha) * K_p
+        msg.angular.z = (alpha_cur - alpha) * K_p
 
         rospy.loginfo_throttle(
-            1.0, 'alpha_des = %4.2f, alpha_cur = %4.2f' % (alpha, slave_yaw))
+            1.0, 'alpha_des = %4.2f, alpha_cur = %4.2f' % (alpha, alpha_cur))
         rospy.loginfo_throttle(1.0, 'h = %4.2f, p = %4.2f, d = %4.2f' % (
             math.atan2(sin_head, cos_head), math.atan2(sin_pose, cos_pose), delta))
         rospy.loginfo_throttle(1.0, 'x = %4.2f, y = %4.2f, z = %4.2f' % (slave.position.x, slave.position.y, slave.position.z))
