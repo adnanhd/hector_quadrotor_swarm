@@ -136,34 +136,43 @@ if __name__ == '__main__':
 
     i = 0
 
-    o_des = 5  # Constant in the formula
-    C = 5  # Constant in the formula
-    gamma = 10 if rospy.get_namespace() == '/uav1/' != -1 else 0  # Consant in the formula
-    beta = 12  # Constant in the formula
-    u_max = 2.50
-    K_p = 1.0  # Constant in the formula
+    ## desired level of distance between any two agents
+    o_des = 5       
+    ## denumerator of the force in the proximal control vector
+    C = 5           
+    ## weight of the direction preference vector
+    gamma = 10      
+    ## weight of the proximal control vector
+    beta = 12       
+    ## Maximum forward velocity of the agent
+    u_max = 2.50    
+    ## Maximum angular velocity of the agent
+    K_p = 1.0       
 
-    # initialize swarm with all arguments defining swarm but excluding slave itself
+    # initialize swarm with all arguments defining swarm but excluding the agent itself
     swarm = rospy.myargv()[1:]
-    # initialize swarm_pose with default PoseStamped() objects
-    # in order to keep position information of the agents in the swarm
+    
+    # initialize swarm_pose with a list of Pose() objects to keep postion information
+    # of the agents in the swarm up-to-date
     swarm_pose = [Pose()] * len(swarm)
-    # initialize slave_pose with a PoseStamped() object to keep postion information
-    # of the slave in the swarm
+
+    # initialize slave with a Pose() object to keep postion information of the agent 
+    # up-to-date
+    ## the position of the agent
     slave = Pose()
-    # initialize slave_vel with a Twist() object to update velocity information
-    # of the slave
+    
+    # initialize msg with a Twist() object to update velocity information of the agent
+    ## the velocity of the agent
     msg = Twist()
 
-    # Initialize node to controll the agent
+    # Initialize node to drive the agent
     rospy.init_node('agent', anonymous=True)
 
-    # Subscribe the position of the agent and the rest of agents in the swarm
+    # Subscribe the position of the agent itself to update the variable 'slave'
     rospy.Subscriber('ground_truth_to_tf/pose',
                      PoseStamped, slave_callback, slave)
 
     # Subscribe pose topic of the agents in the swarm to keep swarm_pose up-to-date
-    # i.e., keep all agents' position in the swarm
     for agent_index in range(len(swarm)):
         rospy.Subscriber('/' + swarm[agent_index] + '/ground_truth_to_tf/pose',
                          PoseStamped, agent_callback, (swarm_pose, agent_index))
@@ -171,17 +180,17 @@ if __name__ == '__main__':
     # Publish the velocity of the agent
     pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
 
-    rate = rospy.Rate(100)  # 10Hz
+    rate = rospy.Rate(100)  # 100Hz
 
     while not rospy.is_shutdown():
-        # Heading vector is one pillor of the swarm and here is initialized with a Twist() object
+        ## the current yaw of the agent
         alpha_cur = Quad2Euler(slave.orientation)[2]
-
-        #################################
+        
+        '''##############################
         ## heading alignment behaviour ##
-        #################################
+        ##############################'''
 
-        # the swarm's cummulative current z-axis rotation (yaw)
+        # the swarm's cummulative (yaw) current z-axis rotation
         total_yaw = 0
 
         for agent in swarm_pose:
@@ -191,16 +200,20 @@ if __name__ == '__main__':
             # the agent's current z-axis rotation (yaw)
             total_yaw += Quad2Euler(agent.orientation)[2]
 
-        # TODO: add comment
+        # sine and cosine components of the heading alignmnet vector
         if len(swarm_pose) != 0:
+            # if there is any agent in the swarm other than the agent itself
+            # calculate the cummulative heading of the swarm
             cos_head, sin_head = math.cos(
                 total_yaw / len(swarm_pose)), math.sin(total_yaw / len(swarm_pose))
         else:
+            # if no agent is in the swarm but the agent itself
+            # the components of th HA Vector is nothing but the agents current yaw.
             cos_head, sin_head = math.cos(alpha_cur), math.sin(alpha_cur)
 
-        ################################
+        '''#############################
         ## proximal control behaviour ##
-        ################################
+        #############################'''
 
         cos_pose = 0
         sin_pose = 0
@@ -224,9 +237,9 @@ if __name__ == '__main__':
             cos_pose += math.cos(disp_angle) * force
             sin_pose += math.sin(disp_angle) * force
 
-        #################################
+        '''##############################
         ## direction preference vector ##
-        #################################
+        ##############################'''
 
         pref_yaw = math.atan2(
             wps[i][1] - slave.position.y, wps[i][0] - slave.position.x)
@@ -239,9 +252,9 @@ if __name__ == '__main__':
             i = (i+1) % len(wps)
             rospy.loginfo('changed wps to ' + str(i))
 
-        ############################
+        '''#########################
         ## desired heading vector ##
-        ############################
+        #########################'''
 
         # Desired Heading Vector 'a' is initialized with a Twist() object
 
@@ -250,9 +263,9 @@ if __name__ == '__main__':
         sin_alpha = sin_head + beta * sin_pose + gamma * math.sin(delta)
         alpha = math.atan2(sin_alpha, cos_alpha)
 
-        ####################
+        '''#################
         ## motion control ##
-        ####################
+        #################'''
 
         dot_p = math.cos(alpha) * math.cos(alpha_cur) + \
             math.sin(alpha) * math.sin(alpha_cur)
@@ -266,7 +279,8 @@ if __name__ == '__main__':
             1.0, 'alpha_des = %4.2f, alpha_cur = %4.2f' % (alpha, alpha_cur))
         rospy.loginfo_throttle(1.0, 'h = %4.2f, p = %4.2f, d = %4.2f' % (
             math.atan2(sin_head, cos_head), math.atan2(sin_pose, cos_pose), delta))
-        rospy.loginfo_throttle(1.0, 'x = %4.2f, y = %4.2f, z = %4.2f' % (slave.position.x, slave.position.y, slave.position.z))
+        rospy.loginfo_throttle(1.0, 'x = %4.2f, y = %4.2f, z = %4.2f' % (
+            slave.position.x, slave.position.y, slave.position.z))
 
         pub.publish(msg)
         rate.sleep()
